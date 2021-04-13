@@ -6,3 +6,4 @@ Bundle-Version: 1.0.0
 Bundle-Name: nuxeo-sandbox-core
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: com.mlefree.nuxeo.sandbox.nuxeo-sandbox-core;singleton=true
+Nuxeo-Component: OSGI-INF/sandbox-operations-contrib.xml

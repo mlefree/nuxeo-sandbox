@@ -1,15 +1,13 @@
 package com.mlefree.nuxeo.sandbox;
 
+import org.junit.runner.RunWith;
+import org.nuxeo.ecm.automation.test.AutomationFeature;
+import org.nuxeo.ecm.collections.core.test.CollectionFeature;
 import org.nuxeo.ecm.core.api.CloseableCoreSession;
 import org.nuxeo.ecm.core.api.CoreInstance;
-import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.ecm.core.api.NuxeoGroup;
-import org.nuxeo.ecm.core.api.NuxeoPrincipal;
 import org.nuxeo.ecm.core.event.EventService;
 import org.nuxeo.ecm.core.test.annotations.Granularity;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
-import org.nuxeo.ecm.directory.Session;
-import org.nuxeo.ecm.directory.api.DirectoryService;
 import org.nuxeo.ecm.platform.test.PlatformFeature;
 import org.nuxeo.ecm.platform.usermanager.UserManager;
 import org.nuxeo.runtime.api.Framework;
@@ -21,16 +19,12 @@ import org.nuxeo.runtime.test.runner.RunnerFeature;
 import org.nuxeo.runtime.test.runner.TargetExtensions;
 import org.nuxeo.runtime.transaction.TransactionHelper;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-@Features(PlatformFeature.class)
+@RunWith(FeaturesRunner.class)
+@Features({ PlatformFeature.class, CollectionFeature.class, AutomationFeature.class })
 @RepositoryConfig(init = MleRepositoryInit.class, cleanup = Granularity.METHOD)
 @Deploy({ "com.mlefree.nuxeo.sandbox.nuxeo-sandbox-core", "org.nuxeo.ecm.default.config" })
 @PartialDeploy(bundle = "studio.extensions.mleprevost-SANDBOX", extensions = { TargetExtensions.ContentModel.class,
-        TargetExtensions.ContentTemplate.class })
+        TargetExtensions.ContentTemplate.class, })
 public class MleFeature implements RunnerFeature {
 
     public static CloseableCoreSession openSessionAsUser(String userName) {

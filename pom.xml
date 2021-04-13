@@ -11,7 +11,7 @@
     <groupId>com.mlefree.nuxeo.sandbox</groupId>
     <artifactId>nuxeo-sandbox-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>Nuxeo sandbox parent</name>
+    <name>MleFree Nuxeo sandbox parent</name>
     <description/>
     <packaging>pom</packaging>
 
@@ -19,7 +19,7 @@
         <!-- Skip Nuxeo enforcer rules by default -->
         <nuxeo.skip.enforcer>true</nuxeo.skip.enforcer>
         <nuxeo.target.version>11.*</nuxeo.target.version>
-        <studio.project.version>ootb_11-SNAPSHOT</studio.project.version>
+        <studio.project.version>master-SNAPSHOT</studio.project.version>
     </properties>
 
     <modules>
