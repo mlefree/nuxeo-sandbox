@@ -9,6 +9,10 @@ public class StudioConstant {
 
     public static final String FILE_DOC_TYPE = "File";
 
+    public static final String TECHNICAL_RELATION_DOC_TYPE = "TechnicalRelation";
+
+    public static final String TECHNICAL_TYPED_RELATION_DOC_TYPE = "TechnicalTypedRelation";
+
     public static final String SYSTEM_SCHEMA = "system";
 
     public static final String SYSTEM_SCHEMA_FULLTEXT_PROPERTY = "ecm:fulltext";
@@ -44,6 +48,20 @@ public class StudioConstant {
     public static final String SYSTEM_SCHEMA_LOCK_CREATED_PROPERTY = "ecm:lockCreated";
 
     public static final String SYSTEM_SCHEMA_TAG_PROPERTY = "ecm:tag";
+
+    public static final String TECHNICALRELATION_SCHEMA = "technicalrelation";
+
+    public static final String TECHNICALRELATION_SCHEMA_FIRST_PROPERTY = "technicalrelation:first";
+
+    public static final String TECHNICALRELATION_SCHEMA_SECOND_PROPERTY = "technicalrelation:second";
+
+    public static final String TECHNICALRELATIONTYPED_SCHEMA = "technicalrelationtyped";
+
+    public static final String TECHNICALRELATIONTYPED_SCHEMA_SOURCE_PROPERTY = "technicalrelationtyped:source";
+
+    public static final String TECHNICALRELATIONTYPED_SCHEMA_TARGETS_PROPERTY = "technicalrelationtyped:targets";
+
+    public static final String TECHNICALRELATIONTYPED_SCHEMA_TYPE_PROPERTY = "technicalrelationtyped:type";
 
     public static final String TEST_SCHEMA = "test";
 

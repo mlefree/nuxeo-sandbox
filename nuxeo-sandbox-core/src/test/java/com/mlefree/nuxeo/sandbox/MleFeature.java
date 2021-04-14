@@ -1,8 +1,5 @@
 package com.mlefree.nuxeo.sandbox;
 
-import org.junit.runner.RunWith;
-import org.nuxeo.ecm.automation.test.AutomationFeature;
-import org.nuxeo.ecm.collections.core.test.CollectionFeature;
 import org.nuxeo.ecm.core.api.CloseableCoreSession;
 import org.nuxeo.ecm.core.api.CoreInstance;
 import org.nuxeo.ecm.core.event.EventService;
@@ -13,16 +10,15 @@ import org.nuxeo.ecm.platform.usermanager.UserManager;
 import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
-import org.nuxeo.runtime.test.runner.FeaturesRunner;
 import org.nuxeo.runtime.test.runner.PartialDeploy;
 import org.nuxeo.runtime.test.runner.RunnerFeature;
 import org.nuxeo.runtime.test.runner.TargetExtensions;
 import org.nuxeo.runtime.transaction.TransactionHelper;
 
-@RunWith(FeaturesRunner.class)
-@Features({ PlatformFeature.class, CollectionFeature.class, AutomationFeature.class })
+@Features({ PlatformFeature.class })
 @RepositoryConfig(init = MleRepositoryInit.class, cleanup = Granularity.METHOD)
-@Deploy({ "com.mlefree.nuxeo.sandbox.nuxeo-sandbox-core", "org.nuxeo.ecm.default.config" })
+@Deploy({ "com.mlefree.nuxeo.sandbox.nuxeo-sandbox-core", "org.nuxeo.ecm.default.config",
+        "org.nuxeo.ecm.platform.usermanager" })
 @PartialDeploy(bundle = "studio.extensions.mleprevost-SANDBOX", extensions = { TargetExtensions.ContentModel.class,
         TargetExtensions.ContentTemplate.class, })
 public class MleFeature implements RunnerFeature {

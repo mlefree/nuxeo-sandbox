@@ -3,7 +3,7 @@ const collectionName = 'default';
 const bulkLimit = 1000;
 const idsToDuplicate = [
     {id: '22aef702-fccd-4f5e-a5f5-659b4affbe30', count: 100000},
-    {id: '22aef702-fccd-4f5e-a5f5-659b4affbe30', count: 100000},
+    {id: '22aef702-fccd-4f5e-a5f5-659b4affbe31', count: 100000},
 ];
 
 const log = (text) => {
@@ -18,7 +18,7 @@ function uuidv4() {
 }
 
 const begin = new Date();
-log(`${begin.toISOString()} : Update in progress`);
+log(`${begin.toISOString()} : Duplication in progress`);
 const myDb = db.getSiblingDB(dbName);
 const collection = myDb.getCollection(collectionName);
 
@@ -47,5 +47,5 @@ idsToDuplicate.forEach(id => {
 })
 
 const end = new Date();
-log(`\n${end.toISOString()} : Update done for ${done} records in ${Math.round((end - begin) / 1000)} sec`);
+log(`\n${end.toISOString()} : Duplication done for ${done} records in ${Math.round((end - begin) / 1000)} sec`);
 

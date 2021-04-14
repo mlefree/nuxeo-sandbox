@@ -49,22 +49,50 @@ ex:`mongo -u <> -p <p> mongo.url.com:27017/your-db duplicate-some-docs.js`)
 
 ## Patterns
 
-### Relations based on Nuxeo Collections
+### Pattern : Technical Type Relations
 
 ![alt](https://www.websequencediagrams.com/files/render?link=50cb6bH4DkSEDqIk0uwYzo3YwBEwzSvn2yv4FSBtfzBgUnJWxi5ZWkO9y91adBsp)
 
-In progress :
+Done :
 
-- [ ] test, limits ?
-- [ ] audit test : MongoShell
-- [ ] TODO Integration of 2 operations 1) addCollectionRelation(docA, type, docB) , 2)  getCollectionRelation( docA,
-  type)
+- [x] Operation `Document.AddTechnicalTypedRelation(docA, docB)`
+- [x] 100K relations perf test => OK [example](screenshots/technicalTypedRealtion100K.json)
+- [ ] 1M relations perf test => KO :
+
+```bash
+2021-04-14T14:17:19.735+0000 E QUERY    [js] Error: Converting from JavaScript to BSON failed: Object size 48888989 exceeds limit of 16793600 bytes.  
+```
+
+- [ ] TODO `Document.GetTechnicalTypedRelation(docA, type)` dev and integration
 
 Limitations :
 
-Mongo size => ? NXQL ? ES ? No ->  operation to search
+1. Size of document in Mongo: 16 Mb. As an example, the [100K relation doc](screenshots/technicalTypedRealtion100K.json)
+   has a size of 4,6 Mb.
+1. Size of typed relations field : approximately **300K** relations. (per Type of relation)
+1. Due to [ES limitation](https://doc.nuxeo.com/nxdoc/nxql/#elasticsearch-nxql-limitations), joining relations are not a
+   good idea though NXQL query (page provider etc...); It's preferable to use dedicated operations.
 
-## Links
+### Pattern : Technical Many-to-Many Relations
+
+Same as "Technical Type Relations", this pattern is based on many technical objects that contains each relation
+information. It's following the (Many to Many)[https://en.wikipedia.org/wiki/Many-to-many_(data_model)] pattern. More
+modular and open, but more difficult/slow to retrieve information (like type) => it needs operations.
+
+Done :
+
+- [ ] TODO Operations
+- [ ] TODO Perf tests
+
+Limitations :
+
+1. Size of document in Mongo: 16 Mb
+1. Due to [ES limitation](https://doc.nuxeo.com/nxdoc/nxql/#elasticsearch-nxql-limitations), joining relations are not a
+   good idea though NXQL query (page provider etc...); It's preferable to use dedicated operations.
+
+## Contact
 
 @mlefree
+
+[Licence](./LICENSE)
 

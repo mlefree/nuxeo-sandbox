@@ -19,7 +19,7 @@
         <!-- Skip Nuxeo enforcer rules by default -->
         <nuxeo.skip.enforcer>true</nuxeo.skip.enforcer>
         <nuxeo.target.version>11.*</nuxeo.target.version>
-        <studio.project.version>master-SNAPSHOT</studio.project.version>
+        <studio.project.version>technicalrelation-SNAPSHOT</studio.project.version>
     </properties>
 
     <modules>

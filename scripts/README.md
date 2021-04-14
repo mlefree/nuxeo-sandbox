@@ -14,5 +14,5 @@ mongo create-indexes.js
 | ------ | ----------- | ----------- |
 | create-indexes.js | Create mongo basic indexes needed | |
 | duplicate-some-docs.js | Populate db base on some existing docs (ecm:id) |  |
-| create-collection-relations.js | In progress |  |
+| create-some-relations.js | Create Technical relations |  |
 
