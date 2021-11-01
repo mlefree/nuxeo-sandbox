@@ -1,127 +1,127 @@
 <?xml version="1.0"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.nuxeo</groupId>
-        <artifactId>nuxeo-parent</artifactId>
-        <version>11.5.97</version>
-    </parent>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.nuxeo</groupId>
+    <artifactId>nuxeo-parent</artifactId>
+    <version>11.5.97</version>
+  </parent>
 
-    <groupId>com.mlefree.nuxeo.sandbox</groupId>
-    <artifactId>nuxeo-sandbox-parent</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <name>MleFree Nuxeo sandbox parent</name>
-    <description/>
-    <packaging>pom</packaging>
+  <groupId>com.mlefree.nuxeo.sandbox</groupId>
+  <artifactId>nuxeo-sandbox-parent</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <name>MleFree Nuxeo sandbox parent</name>
+  <description />
+  <packaging>pom</packaging>
 
-    <properties>
-        <!-- Skip Nuxeo enforcer rules by default -->
-        <nuxeo.skip.enforcer>true</nuxeo.skip.enforcer>
-        <nuxeo.target.version>11.*</nuxeo.target.version>
-        <studio.project.version>technicalrelation-SNAPSHOT</studio.project.version>
-    </properties>
+  <properties>
+    <!-- Skip Nuxeo enforcer rules by default -->
+    <nuxeo.skip.enforcer>true</nuxeo.skip.enforcer>
+    <nuxeo.target.version>11.*</nuxeo.target.version>
+    <studio.project.version>mleprevost_c2f554--mle_test-SNAPSHOT</studio.project.version>
+  </properties>
 
-    <modules>
-        <module>nuxeo-sandbox-core</module>
-        <module>nuxeo-sandbox-package</module>
-    </modules>
+  <modules>
+    <module>nuxeo-sandbox-core</module>
+    <module>nuxeo-sandbox-package</module>
+  </modules>
 
-    <scm/>
-    <licenses/>
-    <mailingLists/>
-    <issueManagement/>
-    <ciManagement/>
-    <developers/>
-    <distributionManagement/>
+  <scm />
+  <licenses />
+  <mailingLists />
+  <issueManagement />
+  <ciManagement />
+  <developers />
+  <distributionManagement />
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.mlefree.nuxeo.sandbox</groupId>
-                <artifactId>nuxeo-sandbox-core</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.mlefree.nuxeo.sandbox</groupId>
-                <artifactId>nuxeo-sandbox-package</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>nuxeo-studio</groupId>
-                <artifactId>mleprevost-SANDBOX</artifactId>
-                <version>${studio.project.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.mlefree.nuxeo.sandbox</groupId>
+        <artifactId>nuxeo-sandbox-core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.mlefree.nuxeo.sandbox</groupId>
+        <artifactId>nuxeo-sandbox-package</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>nuxeo-studio</groupId>
+        <artifactId>ins2-uk-ext-hmcts-willsprobate</artifactId>
+        <version>${studio.project.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
-    <repositories>
-        <repository>
-            <id>maven-public</id>
-            <url>https://packages.nuxeo.com/repository/maven-public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <updatePolicy>always</updatePolicy>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>maven-internal</id>
-            <url>https://packages.nuxeo.com/repository/maven-internal/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <updatePolicy>always</updatePolicy>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>nuxeo-studio</id>
-            <url>https://connect.nuxeo.com/nuxeo/site/studio/maven</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <updatePolicy>always</updatePolicy>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
+  <repositories>
+    <repository>
+      <id>maven-public</id>
+      <url>https://packages.nuxeo.com/repository/maven-public/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <updatePolicy>always</updatePolicy>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>maven-internal</id>
+      <url>https://packages.nuxeo.com/repository/maven-internal/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <updatePolicy>always</updatePolicy>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>nuxeo-studio</id>
+      <url>https://connect.nuxeo.com/nuxeo/site/studio/maven</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <updatePolicy>always</updatePolicy>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>maven-public</id>
-            <url>https://packages.nuxeo.com/repository/maven-public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>maven-public</id>
+      <url>https://packages.nuxeo.com/repository/maven-public/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
 
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-enforcer-plugin</artifactId>
-                    <configuration>
-                        <rules>
-                            <requireReleaseDeps>
-                                <!-- Exclusions are tolerated for nightly "date-based" releases only -->
-                                <excludes>
-                                    <exclude>nuxeo-studio:mleprevost-SANDBOX</exclude>
-                                </excludes>
-                            </requireReleaseDeps>
-                        </rules>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <configuration>
+            <rules>
+              <requireReleaseDeps>
+                <!-- Exclusions are tolerated for nightly "date-based" releases only -->
+                <excludes>
+                  <exclude>nuxeo-studio:mleprevost-SANDBOX</exclude>
+                  <exclude>nuxeo-studio:ins2-uk-ext-hmcts-willsprobate</exclude>
+                </excludes>
+              </requireReleaseDeps>
+            </rules>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 </project>

@@ -11,15 +11,17 @@
   <description />
 
   <dependencies>
+
+    <!-- studio -->
     <dependency>
       <groupId>nuxeo-studio</groupId>
-      <artifactId>mleprevost-SANDBOX</artifactId>
+      <artifactId>ins2-uk-ext-hmcts-willsprobate</artifactId>
     </dependency>
+
     <dependency>
       <groupId>org.nuxeo.ecm.automation</groupId>
       <artifactId>nuxeo-automation-core</artifactId>
     </dependency>
-
     <dependency>
       <groupId>org.nuxeo.runtime</groupId>
       <artifactId>nuxeo-runtime</artifactId>

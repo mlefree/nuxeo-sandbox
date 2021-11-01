@@ -6,7 +6,6 @@
         <operation class="com.mlefree.nuxeo.sandbox.operations.GetCreatePreValidation"/>
         <operation class="com.mlefree.nuxeo.sandbox.operations.AddCollectionRelation"/>
         <operation class="com.mlefree.nuxeo.sandbox.operations.GetCollectionRelations"/>
-        <operation class="com.mlefree.nuxeo.sandbox.operations.AddTechnicalTypedRelation"/>
     </extension>
 
 </component>
