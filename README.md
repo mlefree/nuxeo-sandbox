@@ -5,7 +5,7 @@ nuxeo mle sandbox built with https://doc.nuxeo.com/nxdoc/nuxeo-cli/#multiple-mod
 # > parent + core :
 nuxeo bootstrap multi-module
 #id : com.mlefree.nuxeo.sandbox
-#nuxeo version : 11.1-SNAPSHOT or 11.5.97 or ... ?
+#nuxeo version : 2021.0
 
 # > package :
 nuxeo bootstrap package
