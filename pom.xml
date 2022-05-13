@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.nuxeo</groupId>
     <artifactId>nuxeo-parent</artifactId>
-    <version>2021.10.4</version>
+    <version>2021.20.5</version>
   </parent>
 
   <groupId>com.mlefree.nuxeo.sandbox</groupId>
@@ -18,7 +18,7 @@
     <!-- Skip Nuxeo enforcer rules by default -->
     <nuxeo.skip.enforcer>true</nuxeo.skip.enforcer>
     <nuxeo.target.version>2021.*</nuxeo.target.version>
-    <studio.project.version>mleprevost_c2f554--mle_test-SNAPSHOT</studio.project.version>
+    <studio.project.version>master-SNAPSHOT</studio.project.version>
   </properties>
 
   <modules>
@@ -48,7 +48,7 @@
       </dependency>
       <dependency>
         <groupId>nuxeo-studio</groupId>
-        <artifactId>ins2-uk-ext-hmcts-willsprobate</artifactId>
+        <artifactId>mleprevost-SANDBOX</artifactId>
         <version>${studio.project.version}</version>
       </dependency>
     </dependencies>
@@ -58,17 +58,6 @@
     <repository>
       <id>maven-public</id>
       <url>https://packages.nuxeo.com/repository/maven-public/</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <updatePolicy>always</updatePolicy>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>maven-internal</id>
-      <url>https://packages.nuxeo.com/repository/maven-internal/</url>
       <releases>
         <enabled>true</enabled>
       </releases>
@@ -126,7 +115,6 @@
                 <!-- Exclusions are tolerated for nightly "date-based" releases only -->
                 <excludes>
                   <exclude>nuxeo-studio:mleprevost-SANDBOX</exclude>
-                  <exclude>nuxeo-studio:ins2-uk-ext-hmcts-willsprobate</exclude>
                 </excludes>
               </requireReleaseDeps>
             </rules>

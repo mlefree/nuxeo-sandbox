@@ -1,5 +1,7 @@
 package com.mlefree.nuxeo.sandbox;
 
+import static com.mlefree.nuxeo.sandbox.studio.StudioConstant.BUNDLE_NAME;
+
 import org.nuxeo.ecm.core.api.CloseableCoreSession;
 import org.nuxeo.ecm.core.api.CoreInstance;
 import org.nuxeo.ecm.core.event.EventService;
@@ -14,8 +16,6 @@ import org.nuxeo.runtime.test.runner.PartialDeploy;
 import org.nuxeo.runtime.test.runner.RunnerFeature;
 import org.nuxeo.runtime.test.runner.TargetExtensions;
 import org.nuxeo.runtime.transaction.TransactionHelper;
-
-import static com.mlefree.nuxeo.sandbox.studio.StudioConstant.BUNDLE_NAME;
 
 @Features({ PlatformFeature.class })
 @RepositoryConfig(init = MleRepositoryInit.class, cleanup = Granularity.METHOD)
