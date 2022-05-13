@@ -1,5 +1,7 @@
 package com.mlefree.nuxeo.sandbox;
 
+import static com.mlefree.nuxeo.sandbox.studio.StudioConstant.BUNDLE_NAME;
+
 import org.nuxeo.ecm.core.api.CloseableCoreSession;
 import org.nuxeo.ecm.core.api.CoreInstance;
 import org.nuxeo.ecm.core.event.EventService;
@@ -19,7 +21,7 @@ import org.nuxeo.runtime.transaction.TransactionHelper;
 @RepositoryConfig(init = MleRepositoryInit.class, cleanup = Granularity.METHOD)
 @Deploy({ "com.mlefree.nuxeo.sandbox.nuxeo-sandbox-core", "org.nuxeo.ecm.default.config",
         "org.nuxeo.ecm.platform.usermanager" })
-@PartialDeploy(bundle = "studio.extensions.mleprevost-SANDBOX", extensions = { TargetExtensions.ContentModel.class,
+@PartialDeploy(bundle = BUNDLE_NAME, extensions = { TargetExtensions.ContentModel.class,
         TargetExtensions.ContentTemplate.class, })
 public class MleFeature implements RunnerFeature {
 

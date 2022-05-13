@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+
+<component name="org.nuxeo.elasticsearch.provider.testContrib">
+
+    <extension point="providers" target="org.nuxeo.ecm.platform.query.api.PageProviderService">
+
+
+        <coreQueryPageProvider name="TEST_PP">
+            <pattern>
+                SELECT * FROM Document WHERE ecm:parentId = ? AND
+                ecm:mixinType != 'HiddenInNavigation' AND dc:title IN ('Note 1','Note 2')
+                AND ecm:isVersion = 0 AND ecm:isTrashed = 0
+            </pattern>
+            <sort ascending="true" column="dc:title"/>
+            <pageSize>50</pageSize>
+        </coreQueryPageProvider>
+
+        <coreQueryPageProvider name="TEST_PP_ALL_NOTE">
+            <pattern>
+                SELECT * FROM Note WHERE
+                ecm:mixinType != 'HiddenInNavigation'
+                AND
+                ecm:isVersion = 0 AND ecm:isTrashed = 0
+            </pattern>
+            <sort ascending="true" column="dc:title"/>
+            <pageSize>50</pageSize>
+            <property name="maxResults">4444</property>
+        </coreQueryPageProvider>
+
+        <coreQueryPageProvider name="pp_mainstream_default_search_test"
+                               class="org.nuxeo.elasticsearch.provider.ElasticSearchNxqlPageProvider">
+            <pattern>
+                SELECT * FROM Document WHERE
+                ecm:mixinType != 'HiddenInNavigation'
+                AND
+                ecm:isVersion = 0 AND ecm:isTrashed = 0
+            </pattern>
+            <sort ascending="true" column="dc:title"/>
+            <pageSize>50</pageSize>
+            <property name="maxResults">4444</property>
+            <whereClause docType="DefaultSearch">
+                <predicate parameter="hmctsgrant:surname" operator="=">
+                    <field schema="hmctsgrant" name="ecm_fulltext"/>
+                </predicate>
+                <predicate parameter="ecm:path" operator="STARTSWITH">
+                    <field schema="default_search" name="ecm_path"/>
+                </predicate>
+            </whereClause>
+
+            <predicate>
+                <paramPrefix>hmctsgrant</paramPrefix>
+                <paramId>surname</paramId>
+                <fields>
+                    <field>
+                        <id>hmcts_grant_schema_surname</id>
+                        <type>string</type>
+                        <isMultiValue>false</isMultiValue>
+                    </field>
+                </fields>
+                <operator>=</operator>
+                <indexHint>hmctsgrant:surname.fulltext</indexHint>
+                <analyzerHint>lowercase_analyzer</analyzerHint>
+                <operatorHint>wildcard</operatorHint>
+            </predicate>
+        </coreQueryPageProvider>
+
+        <genericPageProvider name="UNRESTRICTED_PP"
+                             class="org.nuxeo.elasticsearch.provider.ElasticSearchNxqlPageProvider">
+            <property name="useUnrestrictedSession">true</property>
+            <pattern>
+                SELECT * FROM Document
+            </pattern>
+            <sort ascending="true" column="dc:title"/>
+            <pageSize>50</pageSize>
+        </genericPageProvider>
+
+
+        <genericPageProvider class="org.nuxeo.elasticsearch.provider.ElasticSearchNxqlPageProvider"
+                             name="tenant_all_committee_provider">
+            <trackUsage>true</trackUsage>
+            <property name="coreSession">#{documentManager}</property>
+            <whereClause docType="Note">
+                <predicate parameter="dc:title" operator="FULLTEXT">
+                    <field schema="committee_committee_pp" name="title"/>
+                </predicate>
+                <fixedPart>ecm:primaryType = 'Committee' AND ecm:isTrashed = 0</fixedPart>
+            </whereClause>
+            <pageSize>20</pageSize>
+        </genericPageProvider>
+
+    </extension>
+
+
+</component>

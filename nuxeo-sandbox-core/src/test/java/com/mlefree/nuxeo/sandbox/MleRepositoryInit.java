@@ -17,7 +17,7 @@ public class MleRepositoryInit implements RepositoryInit {
         DocumentModel folder = session.createDocumentModel(rootWorkspace.getPathAsString(), "Folder", "Folder");
         session.createDocument(folder);
 
-        DocumentModel technicalWorkspace = session.createDocumentModel("/", "TechnicalWorkspace", "Workspace");
-        session.createDocument(technicalWorkspace);
+         // DocumentModel technicalWorkspace = session.createDocumentModel("/", "TechnicalWorkspace", "Workspace");
+         // session.createDocument(technicalWorkspace);
     }
 }
