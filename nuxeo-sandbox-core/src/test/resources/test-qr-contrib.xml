@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<component name="com.mlefree.nuxeo.sandbox.services.QRCode.test">
+    <require>com.mlefree.nuxeo.sandbox.services.QRCode</require>
+    <!-- QR code contribution for title and version -->
+    <extension target="com.mlefree.nuxeo.sandbox.services.QRCode" point="qrcontent">
+        <qrcontent id="titleVersion">
+            <separator value="_"/>
+            <xpath value="dc:title"/>
+            <xpath value="dc:description"/>
+        </qrcontent>
+    </extension>
+</component>

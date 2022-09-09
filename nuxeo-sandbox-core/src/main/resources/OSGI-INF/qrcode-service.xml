@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<component name="com.mlefree.nuxeo.sandbox.services.QRCode">
+
+  <implementation class="com.mlefree.nuxeo.sandbox.services.QRCodeImpl" />
+
+  <service>
+    <provide interface="com.mlefree.nuxeo.sandbox.services.QRCode" />
+  </service>
+
+  <extension-point name="qrcontent">
+    <documentation>bla bla</documentation>
+    <object class="com.mlefree.nuxeo.sandbox.services.QRDescriptor" />
+  </extension-point>
+
+</component>
