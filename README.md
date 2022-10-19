@@ -14,6 +14,7 @@ nuxeo bootstrap package
 nuxeo studio
 ```
 
+
 ## Install a representative db
 
 helped by [some mongoshell scripts](./scripts)
@@ -80,8 +81,8 @@ Remarks/Limitations/Drawbacks :
 
 1. Size of document in Mongo: 16 Mb. As an example, the [100K relation doc](screenshots/technicalTypedRealtion100K.json)
    . has a size of 4,6 Mb.
-1. Size of typed relations field : approximately **300K** relations. (per Type of relation).
-1. Due to [ES limitation](https://doc.nuxeo.com/nxdoc/nxql/#elasticsearch-nxql-limitations), joining relations are not a
+2. Size of typed relations field : approximately **300K** relations. (per Type of relation).
+3. Due to [ES limitation](https://doc.nuxeo.com/nxdoc/nxql/#elasticsearch-nxql-limitations), joining relations are not a
    good idea though NXQL query (page provider etc...) - it's not supported by Nuxeo; It's preferable to use dedicated
    operations.
 
@@ -99,10 +100,10 @@ Done :
 Remarks/Limitations/Drawbacks  :
 
 1. Size of document in Mongo: 16 Mb.
-1. Due to [ES limitation](https://doc.nuxeo.com/nxdoc/nxql/#elasticsearch-nxql-limitations), joining relations are not a
+2. Due to [ES limitation](https://doc.nuxeo.com/nxdoc/nxql/#elasticsearch-nxql-limitations), joining relations are not a
    good idea though NXQL query (page provider etc...) - not supported by Nuxeo; It's preferable to use dedicated
    operations.
-1. Create a document for each relation increase database size.
+3. Create a document for each relation increase database size.
 
 ## Contact
 
