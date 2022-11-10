@@ -21,7 +21,6 @@ bin/
 .mylar
 *.orig
 .pmd
-.project
 *.pyc
 .pydevproject
 *.rej
@@ -29,4 +28,5 @@ bin/
 *-bak
 *.bak
 *~gen
+*gitignored*
 nashorn_code_cache/
