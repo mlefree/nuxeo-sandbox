@@ -127,7 +127,10 @@
 
     <!-- Studio Registries Extraction -->
     <nx:studioExtraction todir="${outdir}/marketplace">
-      <fileset dir="${outdir}/marketplace/install/bundles" />
+      <fileset dir="${outdir}/marketplace/install/bundles">
+        <exclude name="mleprevost-SANDBOX-*.jar"  />
+        <include name="*.jar" />
+      </fileset>
     </nx:studioExtraction>
 
     <zip destfile="${outdir}/${maven.project.artifactId}-${maven.project.version}.zip" basedir="${outdir}/marketplace" />
