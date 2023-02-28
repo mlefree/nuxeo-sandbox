@@ -21,8 +21,9 @@ import org.nuxeo.runtime.transaction.TransactionHelper;
 @RepositoryConfig(init = MleRepositoryInit.class, cleanup = Granularity.METHOD)
 @Deploy({ "com.mlefree.nuxeo.sandbox.nuxeo-sandbox-core", "org.nuxeo.ecm.default.config",
         "org.nuxeo.ecm.platform.usermanager" })
-@PartialDeploy(bundle = BUNDLE_NAME, extensions = { TargetExtensions.ContentModel.class,
-        TargetExtensions.ContentTemplate.class, })
+// @PartialDeploy(bundle = BUNDLE_NAME, extensions = { TargetExtensions.ContentModel.class,
+// TargetExtensions.ContentTemplate.class, })
+@Deploy({ BUNDLE_NAME })
 public class MleFeature implements RunnerFeature {
 
     public static CloseableCoreSession openSessionAsUser(String userName) {
