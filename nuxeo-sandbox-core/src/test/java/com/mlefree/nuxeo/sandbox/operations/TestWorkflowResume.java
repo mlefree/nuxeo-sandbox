@@ -31,7 +31,7 @@ import com.mlefree.nuxeo.sandbox.features.MleFeature;
 
 @RunWith(FeaturesRunner.class)
 @Features({ MleFeature.class, AutomationFeature.class, CollectionFeature.class })
-public class TestAddCollectionRelation {
+public class TestWorkflowResume {
 
     @Inject
     protected CoreSession session;
@@ -42,10 +42,8 @@ public class TestAddCollectionRelation {
     @Inject
     protected TransactionalFeature transactionalFeature;
 
-    public static final String SELECT_COLLECTIONS = "SELECT * FROM Document WHERE ecm:mixinType = 'Collection'";
-
     @Test
-    public void shouldAddRelation() throws OperationException {
+    public void shouldResume() throws OperationException {
 
         DocumentModel folder1 = session.createDocumentModel("/", "folder1", "Folder");
         folder1.setPropertyValue("dc:title", "folder1");
@@ -53,34 +51,11 @@ public class TestAddCollectionRelation {
         folder1 = session.createDocument(folder1);
         session.saveDocument(folder1);
 
-        DocumentModel folder2 = session.createDocumentModel("/", "folder2", "Folder");
-        folder2.setPropertyValue("dc:title", "folder2");
-        folder2.setPropertyValue("dc:description", "test folder");
-        folder2 = session.createDocument(folder2);
-        session.saveDocument(folder2);
-
         OperationContext ctx = new OperationContext(session);
         ctx.setInput(folder1);
-        HashMap<String, String> params = new HashMap<>();
-        params.put("target", folder2.getId());
-        automationService.run(ctx, AddCollectionRelation.ID, params);
+        automationService.run(ctx, WorkflowResume.ID);
         transactionalFeature.nextTransaction();
 
-        folder1 = session.getDocument(folder1.getRef());
-        folder2 = session.getDocument(folder2.getRef());
-        assertEquals(0, ((List<String>) folder2.getPropertyValue(DOCUMENT_COLLECTION_IDS_PROPERTY_NAME)).size());
-
-        try (CloseableCoreSession adminSession = openSessionAsUser(ADMINISTRATOR)) {
-            DocumentModelList results = adminSession.query(SELECT_COLLECTIONS);
-            assertEquals(1, results.size());
-            assertTrue(results.get(0).hasFacet(HIDDEN_IN_NAVIGATION));
-
-            assertEquals(folder1.getId(), results.get(0).getPropertyValue("dc:source"));
-            assertEquals(folder2.getType(), results.get(0).getPropertyValue("dc:description"));
-            assertEquals("[" + folder2.getId() + "]",
-                    results.get(0).getPropertyValue("collection:documentIds").toString());
-
-        }
     }
 
 }

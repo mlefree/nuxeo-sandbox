@@ -13,7 +13,7 @@
 
     <dependencies>
 
-        <!-- studio -->
+        <!-- constants -->
         <dependency>
             <groupId>nuxeo-studio</groupId>
             <artifactId>mleprevost-SANDBOX</artifactId>
@@ -35,6 +35,33 @@
         <dependency>
             <groupId>org.nuxeo.ecm.platform</groupId>
             <artifactId>nuxeo-platform-collections-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.nuxeo.ecm.routing</groupId>
+            <artifactId>nuxeo-routing-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.nuxeo.ecm.routing</groupId>
+            <artifactId>nuxeo-routing-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.nuxeo.ecm.automation</groupId>
+            <artifactId>nuxeo-automation-features</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.nuxeo.ecm.platform</groupId>
+            <artifactId>nuxeo-platform-comment-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.nuxeo.ecm.platform</groupId>
+            <artifactId>nuxeo-platform-usermanager</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.nuxeo.ecm.platform</groupId>
+            <artifactId>nuxeo-platform-notification</artifactId>
         </dependency>
 
         <!-- Test -->
@@ -105,6 +132,20 @@
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.nuxeo.ecm.platform</groupId>
+            <artifactId>nuxeo-platform-audit-core</artifactId>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.nuxeo.ecm.routing</groupId>
+            <artifactId>nuxeo-routing-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
 
     </dependencies>
 </project>

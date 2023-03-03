@@ -30,8 +30,8 @@ import org.nuxeo.runtime.test.runner.FeaturesRunner;
 import org.nuxeo.runtime.test.runner.TransactionalFeature;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.mlefree.nuxeo.sandbox.MleFeature;
-import com.mlefree.nuxeo.sandbox.RepositoryElasticSearchFeature;
+import com.mlefree.nuxeo.sandbox.features.MleFeature;
+import com.mlefree.nuxeo.sandbox.features.RepositoryElasticSearchFeature;
 
 @RunWith(FeaturesRunner.class)
 @Features({ MleFeature.class, AutomationFeature.class, EmbeddedAutomationServerFeature.class,
@@ -50,7 +50,7 @@ import com.mlefree.nuxeo.sandbox.RepositoryElasticSearchFeature;
 // @Deploy("org.nuxeo.elasticsearch.core.test:pageprovider2-test-contrib.xml")
 // @Deploy("org.nuxeo.elasticsearch.core.test:pageprovider2-coretype-test-contrib.xml")
 // @RepositoryConfig(cleanup = Granularity.METHOD, init = MleRepositoryInit.class)
-public class AutomationESDocumentsTest {
+public class TestAutomationESDocuments {
 
     @Inject
     protected HttpAutomationSession session;

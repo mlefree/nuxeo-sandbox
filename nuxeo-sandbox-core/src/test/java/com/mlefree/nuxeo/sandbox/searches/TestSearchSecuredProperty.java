@@ -55,7 +55,7 @@ import org.nuxeo.runtime.test.runner.FeaturesRunner;
 @Deploy("org.nuxeo.ecm.platform.search.core")
 @Deploy("org.nuxeo.elasticsearch.core.test:elasticsearch-test-contrib.xml")
 // @Deploy("com.mlefree.nuxeo.sandbox.nuxeo-sandbox-core:pageprovider-test-contrib.xml")
-public class SearchSecuredPropertyTest extends BaseTest {
+public class TestSearchSecuredProperty extends BaseTest {
 
     @Test
     @Ignore

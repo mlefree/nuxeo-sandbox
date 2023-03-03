@@ -1,4 +1,4 @@
-package com.mlefree.nuxeo.sandbox.studio;
+package com.mlefree.nuxeo.sandbox.constants;
 
 public class StudioConstant {
     private StudioConstant() {}

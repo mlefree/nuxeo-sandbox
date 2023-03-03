@@ -15,7 +15,7 @@ import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
 
-import com.mlefree.nuxeo.sandbox.MleFeature;
+import com.mlefree.nuxeo.sandbox.features.MleFeature;
 
 @RunWith(FeaturesRunner.class)
 @Features({ MleFeature.class, AutomationFeature.class })
