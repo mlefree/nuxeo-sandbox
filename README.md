@@ -107,7 +107,19 @@ Remarks/Limitations/Drawbacks  :
 ### Workflow : active/resume pattern
 
 
-https://jira.nuxeo.com/browse/SUPNXP-43154
+first, fix build : https://jira.nuxeo.com/browse/SUPNXP-43154
+
+Studio needs a WF with fields :
+- `active` : boolean
+- `lastActiveDate` : date
+
+if any task node has the same fields, it is replicated
+
+operations :
+- `ddd` : get All active tasks
+
+Audit tracking
+
 
 ## Contact
 

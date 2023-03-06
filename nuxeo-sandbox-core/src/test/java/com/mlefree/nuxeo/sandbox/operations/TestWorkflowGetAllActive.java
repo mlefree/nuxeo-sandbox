@@ -8,7 +8,6 @@ import org.nuxeo.ecm.automation.AutomationService;
 import org.nuxeo.ecm.automation.OperationContext;
 import org.nuxeo.ecm.automation.OperationException;
 import org.nuxeo.ecm.core.api.CoreSession;
-import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
 import org.nuxeo.runtime.test.runner.TransactionalFeature;
@@ -18,7 +17,7 @@ import com.mlefree.nuxeo.sandbox.features.StudioWorkflowIntegrationTestFeature;
 
 @RunWith(FeaturesRunner.class)
 @Features({ MleFeature.class, StudioWorkflowIntegrationTestFeature.class })
-public class TestWorkflowResume {
+public class TestWorkflowGetAllActive {
 
     @Inject
     protected CoreSession session;
@@ -30,17 +29,10 @@ public class TestWorkflowResume {
     protected TransactionalFeature transactionalFeature;
 
     @Test
-    public void shouldResume() throws OperationException {
-
-        DocumentModel folder1 = session.createDocumentModel("/", "folder1", "Folder");
-        folder1.setPropertyValue("dc:title", "folder1");
-        folder1.setPropertyValue("dc:description", "test folder");
-        folder1 = session.createDocument(folder1);
-        session.saveDocument(folder1);
+    public void shouldGetAll() throws OperationException {
 
         OperationContext ctx = new OperationContext(session);
-        ctx.setInput(folder1);
-        automationService.run(ctx, WorkflowResume.ID);
+        automationService.run(ctx, WorkflowGetAllActive.ID);
         transactionalFeature.nextTransaction();
 
     }

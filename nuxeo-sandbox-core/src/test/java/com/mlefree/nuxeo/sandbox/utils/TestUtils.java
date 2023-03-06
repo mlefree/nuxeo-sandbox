@@ -21,16 +21,15 @@ public class TestUtils {
         return session.createDocument(doc);
     }
 
-    public static List<String> getLogEntries(CoreSession session, DocumentModel doc, String eventIDToRetrieve) {
+    public static List<String> getLogEntries(DocumentModel doc, String eventIDToRetrieve) {
         AuditReader reader = Framework.getService(AuditReader.class);
-        QueryBuilder builder = new AuditQueryBuilder()
-                .predicate(eq("eventId", eventIDToRetrieve));
+        QueryBuilder builder = new AuditQueryBuilder().predicate(eq("eventId", eventIDToRetrieve));
         if (doc != null) {
             builder.and(eq("docUUID", doc.getId()));
         }
 
         List<String> entries = new ArrayList<>();
-        for (LogEntry entry: reader.queryLogs(builder)) {
+        for (LogEntry entry : reader.queryLogs(builder)) {
             entries.add(entry.getComment());
         }
 

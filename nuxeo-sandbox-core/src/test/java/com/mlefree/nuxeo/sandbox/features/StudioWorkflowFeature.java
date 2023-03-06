@@ -50,20 +50,6 @@ import com.mlefree.nuxeo.sandbox.utils.WorkflowUtils;
 @Deploy("org.nuxeo.ecm.platform.userworkspace")
 public class StudioWorkflowFeature implements RunnerFeature {
 
-    public static List<DocumentRoute> getAllRelatedWorkflows(DocumentModel document) {
-        List<DocumentRoute> workflows = new ArrayList<>();
-        try (CloseableCoreSession systemSession = openSessionAsUser(ADMIN.getUserName())) {
-            final String query = String.format(
-                    "SELECT * FROM %s WHERE docri:participatingDocuments/* = '%s' AND ecm:currentLifeCycleState = '%s'",
-                    DocumentRoutingConstants.DOCUMENT_ROUTE_DOCUMENT_TYPE, document.getId(),
-                    DocumentRouteElement.ElementLifeCycleState.running);
-            DocumentModelList documentModelList = systemSession.query(query);
-            for (DocumentModel documentModel : documentModelList) {
-                workflows.add(documentModel.getAdapter(GraphRoute.class));
-            }
-        }
-        return workflows;
-    }
 
     public static List<DocumentRoute> getRelatedWithdrawableWorkflows(CoreSession userSession, DocumentModel doc) {
         List<DocumentRoute> workflows = null;
@@ -83,6 +69,7 @@ public class StudioWorkflowFeature implements RunnerFeature {
     public static String startWorkflowAndGetRouteId(DocumentRoutingService routing, CoreSession userSession,
             DocumentModel doc, String workflowName) {
 
+        doc = doc.getCoreSession().getDocument(doc.getRef());
         Map<String, Serializable> map = new HashMap<>();
         // map.put(WF_PUBLISH_COMPANY, COMPANY_A);
 
@@ -96,6 +83,7 @@ public class StudioWorkflowFeature implements RunnerFeature {
     public static Map<String, Serializable> getWorkflowVariables(DocumentRoutingService routing, DocumentModel doc,
             CoreSession userSession) {
 
+        doc = doc.getCoreSession().getDocument(doc.getRef());
         NuxeoPrincipal user = userSession.getPrincipal();
         List<Task> tasks = Framework.getService(TaskService.class).getTaskInstances(doc, user, userSession);
         assertNotNull(tasks);
@@ -113,8 +101,9 @@ public class StudioWorkflowFeature implements RunnerFeature {
 
     }
 
-    public static void goToTheStepInWorkflow(DocumentModel doc, CoreSession userSession, String transition) {
+    public static void followWorkflowTransition(DocumentModel doc, CoreSession userSession, String transition) {
         NuxeoPrincipal user = userSession.getPrincipal();
+        doc = doc.getCoreSession().getDocument(doc.getRef());
         List<Task> tasks = Framework.getService(TaskService.class).getTaskInstances(doc, user, userSession);
         assertNotNull(tasks);
         assertEquals(1, tasks.size());
@@ -122,9 +111,6 @@ public class StudioWorkflowFeature implements RunnerFeature {
 
         followTransition(userSession, task, transition);
         userSession.save();
-
-        // Assert.assertEquals(TASK_ENDED_LIFE_CYCLE_STATE,
-        // userSession.getDocument(task.getDocument().getRef()).getCurrentLifeCycleState());
     }
 
     public static void assertYourPublishWorkflowIsFinished(String routeId, DocumentModel doc, CoreSession sessionUser) {

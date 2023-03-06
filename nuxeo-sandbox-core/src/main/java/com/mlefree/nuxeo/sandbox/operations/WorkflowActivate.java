@@ -28,12 +28,12 @@ import com.mlefree.nuxeo.sandbox.services.WorkflowService;
 /**
  *
  */
-@Operation(id = WorkflowResume.ID, category = CAT_DOCUMENT, label = WorkflowResume.ID, description = "Resume Workflow")
-public class WorkflowResume {
+@Operation(id = WorkflowActivate.ID, category = CAT_DOCUMENT, label = WorkflowActivate.ID, description = "Activate Workflow")
+public class WorkflowActivate {
 
-    protected static final Log log = LogFactory.getLog(WorkflowResume.class);
+    protected static final Log log = LogFactory.getLog(WorkflowActivate.class);
 
-    public static final String ID = "Mle.WorkflowResume";
+    public static final String ID = "Mle.WorkflowActivate";
 
     @Context
     protected CoreSession session;
@@ -43,10 +43,9 @@ public class WorkflowResume {
 
     @OperationMethod
     public DocumentModel run(DocumentModel wfDoc) {
-
         String workflowInstanceId = (String) ctx.get("workflowInstanceId");
-        log.info("workflowInstanceId: " + workflowInstanceId);
-        log.info("wfDoc: " + wfDoc.getId() + " " + wfDoc.getType());
+        log.info("workflowInstanceId: " + workflowInstanceId + " " + wfDoc.getType());
+        log.info("wfDoc: " + wfDoc.getId());
         if (StringUtils.isEmpty(workflowInstanceId)
                 && DocumentRoutingConstants.DOCUMENT_ROUTE_DOCUMENT_TYPE.equals(wfDoc.getType())) {
             workflowInstanceId = wfDoc.getId();
@@ -59,13 +58,14 @@ public class WorkflowResume {
         try {
             wfDoc = session.getDocument(new IdRef(workflowInstanceId));
             WorkflowService workflowService = Framework.getService(WorkflowService.class);
-            workflowService.setOnHold(session, wfDoc);
+            workflowService.setActive(session, wfDoc);
 
             String userName = session.getPrincipal().getName();
-            String comment = String.format("User %s resume workflow", userName);
-            addAuditLog(wfDoc, userName, "resume", WF_EVENTS_CATEGORY, comment);
+            String comment = String.format("User %s activate workflow", userName);
+            addAuditLog(wfDoc, userName, "activate", WF_EVENTS_CATEGORY, comment);
+
         } catch (NuxeoException e) {
-            log.error(String.format("Impossible to resume workflow %s (%s)", workflowInstanceId, e.getMessage()));
+            log.error(String.format("Impossible to activate workflow %s (%s)", workflowInstanceId, e.getMessage()));
         }
         return wfDoc;
     }
