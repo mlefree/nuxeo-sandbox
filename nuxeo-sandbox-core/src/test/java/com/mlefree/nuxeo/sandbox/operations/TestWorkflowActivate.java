@@ -1,6 +1,9 @@
 package com.mlefree.nuxeo.sandbox.operations;
 
-import static com.mlefree.nuxeo.sandbox.utils.UserManagementUtils.openSessionAsSystem;
+import static com.mlefree.nuxeo.sandbox.utils.WorkflowUtils.getAllWorkflows;
+import static junit.framework.TestCase.assertEquals;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -9,10 +12,8 @@ import org.junit.runner.RunWith;
 import org.nuxeo.ecm.automation.AutomationService;
 import org.nuxeo.ecm.automation.OperationContext;
 import org.nuxeo.ecm.automation.OperationException;
-import org.nuxeo.ecm.core.api.CloseableCoreSession;
 import org.nuxeo.ecm.core.api.CoreSession;
-import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.ecm.platform.routing.api.DocumentRoutingConstants;
+import org.nuxeo.ecm.platform.routing.api.DocumentRoute;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
 import org.nuxeo.runtime.test.runner.TransactionalFeature;
@@ -35,15 +36,11 @@ public class TestWorkflowActivate {
 
     @Test
     public void shouldActivate() throws OperationException {
-        DocumentModel wf1 = session.createDocumentModel("/", "wf1",
-                DocumentRoutingConstants.DOCUMENT_ROUTE_DOCUMENT_TYPE);
-        wf1.setPropertyValue("dc:title", "wf1");
-        wf1.setPropertyValue("active", false);
-        wf1 = session.createDocument(wf1);
-        session.saveDocument(wf1);
+        List<DocumentRoute> wfs = getAllWorkflows(session);
+        assertEquals(1, wfs.size());
 
         OperationContext ctx = new OperationContext(session);
-        ctx.setInput(wf1);
+        ctx.setInput(wfs.get(0).getDocument());
         automationService.run(ctx, WorkflowActivate.ID);
         transactionalFeature.nextTransaction();
 

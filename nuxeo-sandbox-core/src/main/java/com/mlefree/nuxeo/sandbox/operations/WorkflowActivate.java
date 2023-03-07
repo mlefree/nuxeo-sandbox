@@ -21,6 +21,7 @@ import org.nuxeo.ecm.core.api.IdRef;
 import org.nuxeo.ecm.core.api.NuxeoException;
 import org.nuxeo.ecm.core.api.impl.DocumentModelListImpl;
 import org.nuxeo.ecm.platform.routing.api.DocumentRoutingConstants;
+import org.nuxeo.ecm.platform.routing.core.impl.GraphRoute;
 import org.nuxeo.runtime.api.Framework;
 
 import com.mlefree.nuxeo.sandbox.services.WorkflowService;
@@ -47,7 +48,8 @@ public class WorkflowActivate {
         log.info("workflowInstanceId: " + workflowInstanceId + " " + wfDoc.getType());
         log.info("wfDoc: " + wfDoc.getId());
         if (StringUtils.isEmpty(workflowInstanceId)
-                && DocumentRoutingConstants.DOCUMENT_ROUTE_DOCUMENT_TYPE.equals(wfDoc.getType())) {
+                && DocumentRoutingConstants.DOCUMENT_ROUTE_DOCUMENT_TYPE.equals(wfDoc.getType())
+                && wfDoc.getAdapter(GraphRoute.class) != null) {
             workflowInstanceId = wfDoc.getId();
         }
 

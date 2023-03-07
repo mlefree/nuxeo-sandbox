@@ -122,7 +122,6 @@ public class WorkflowUtils {
     public static List<DocumentRoute> getAllWorkflows(CoreSession session) {
         List<DocumentModel> routeModels = searchRouteModels(session, "");
         return routeModels.stream()
-                          // .filter(route -> canCreateInstance(session, documentIds, route.getName()))
                           .map(document -> document.getAdapter(DocumentRoute.class))
                           .collect(Collectors.toList());
     }
