@@ -2,10 +2,8 @@ package com.mlefree.nuxeo.sandbox.workflows;
 
 import static com.mlefree.nuxeo.sandbox.MleRepositoryInit.FILE_A_PATH;
 import static com.mlefree.nuxeo.sandbox.features.MleFeature.openSessionAsUser;
-import static com.mlefree.nuxeo.sandbox.features.MleFeature.waitForAsyncExec;
 import static com.mlefree.nuxeo.sandbox.features.StudioWorkflowFeature.assertYourPublishWorkflowIsFinished;
 import static com.mlefree.nuxeo.sandbox.features.StudioWorkflowFeature.followWorkflowTransition;
-import static com.mlefree.nuxeo.sandbox.features.StudioWorkflowFeature.startWorkflowAndGetRouteId;
 import static com.mlefree.nuxeo.sandbox.services.WorkflowServiceImpl.WF_ACTIVE_SECONDS_COUNT;
 import static com.mlefree.nuxeo.sandbox.utils.UsersConfiguration.ADMIN;
 import static com.mlefree.nuxeo.sandbox.utils.UsersConfiguration.MEMBER_X;
@@ -18,8 +16,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import com.mlefree.nuxeo.sandbox.operations.WorkflowGetAllActive;
-import com.mlefree.nuxeo.sandbox.operations.WorkflowTaskGetAllActive;
 import org.junit.Test;
 import org.nuxeo.ecm.automation.OperationContext;
 import org.nuxeo.ecm.automation.OperationException;
@@ -30,8 +26,8 @@ import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.PathRef;
 import org.nuxeo.ecm.platform.routing.api.DocumentRoute;
 
-import com.mlefree.nuxeo.sandbox.operations.WorkflowActivate;
-import com.mlefree.nuxeo.sandbox.operations.WorkflowResume;
+import com.mlefree.nuxeo.sandbox.operations.WorkflowGetAllActive;
+import com.mlefree.nuxeo.sandbox.operations.WorkflowTaskGetAllActive;
 import com.mlefree.nuxeo.sandbox.utils.TestUtils;
 
 public class TestWorkflowActivateResume extends AbstractIntegrationTestWorkflow {
@@ -109,29 +105,6 @@ public class TestWorkflowActivateResume extends AbstractIntegrationTestWorkflow 
         }
     }
 
-    protected DocumentRoute launchWorkflow(CoreSession coreSession, DocumentModel doc, String wfName) {
-        assertEquals(0, getDocumentRelatedWorkflows(doc, coreSession).size());
-
-        String route = startWorkflowAndGetRouteId(documentRoutingService, coreSession, doc, wfName);
-        waitForAsyncExec(1);
-
-        assertEquals(1, getDocumentRelatedWorkflows(doc, coreSession).size());
-        return getDocumentRelatedWorkflows(doc, coreSession).get(0);
-    }
-
-    protected void resumeWorkflow(CoreSession coreSession, DocumentModel wfDoc) throws OperationException {
-        OperationContext ctx = new OperationContext(session);
-        ctx.setInput(wfDoc);
-        automationService.run(ctx, WorkflowResume.ID);
-        waitForAsyncExec(2);
-    }
-
-    protected void activateWorkflow(CoreSession coreSession, DocumentModel wfDoc) throws OperationException {
-        OperationContext ctx = new OperationContext(session);
-        ctx.setInput(wfDoc);
-        automationService.run(ctx, WorkflowActivate.ID);
-        waitForAsyncExec(1);
-    }
 
     protected void assertAuditActiveAndResumeCount(DocumentRoute wfDoc, int activeCount, int resumeCount) {
         List<String> activateAudit = TestUtils.getLogEntries(wfDoc.getDocument(), "activate");

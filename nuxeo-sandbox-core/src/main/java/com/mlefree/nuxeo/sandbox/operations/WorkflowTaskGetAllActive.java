@@ -7,14 +7,12 @@ import org.apache.commons.logging.LogFactory;
 import org.nuxeo.ecm.automation.core.annotations.Context;
 import org.nuxeo.ecm.automation.core.annotations.Operation;
 import org.nuxeo.ecm.automation.core.annotations.OperationMethod;
+import org.nuxeo.ecm.automation.core.annotations.Param;
 import org.nuxeo.ecm.core.api.CoreSession;
-import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.runtime.api.Framework;
 
 import com.mlefree.nuxeo.sandbox.services.WorkflowService;
-
-import java.util.List;
 
 /**
  *
@@ -29,8 +27,14 @@ public class WorkflowTaskGetAllActive {
     @Context
     protected CoreSession session;
 
+    @Param(name = "activeOnly", required = false)
+    protected Boolean activeOnly;
+
     @OperationMethod
     public DocumentModelList run() {
-        return Framework.getService(WorkflowService.class).getAllActiveTasks(session);
+        if (activeOnly == null) {
+            activeOnly = true;
+        }
+        return Framework.getService(WorkflowService.class).getAllRunningTasks(session, activeOnly);
     }
 }

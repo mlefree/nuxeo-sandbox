@@ -1,11 +1,8 @@
 package com.mlefree.nuxeo.sandbox.services;
 
-import org.nuxeo.ecm.automation.OperationContext;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
-
-import java.util.List;
 
 public interface WorkflowService {
 
@@ -15,7 +12,7 @@ public interface WorkflowService {
 
     void setOnHold(CoreSession session,  DocumentModel wfDoc);
 
-    DocumentModelList getAllActiveWorkflow(CoreSession session);
+    DocumentModelList getAllRunningWorkflow(CoreSession session, boolean activeOnly);
 
-    DocumentModelList getAllActiveTasks(CoreSession session);
+    DocumentModelList getAllRunningTasks(CoreSession session, boolean activeOnly);
 }

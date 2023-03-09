@@ -1,0 +1,317 @@
+<!--
+`mle-tasks-drawer`
+@group Nuxeo UI
+@element mle-tasks-drawer
+-->
+<dom-module id="mle-tasks-drawer">
+    <template>
+        <style include="iron-flex nuxeo-styles">
+            .tasks-dashboard {
+                padding: 0.7em 1em;
+                display: block;
+                border-top: 1px solid var(--nuxeo-border);
+            }
+
+            .container {
+                display: block;
+                position: relative;
+                height: 100%;
+            }
+
+            :host {
+                display: block;
+                position: relative;
+                height: calc(100vh - 7.7em - (var(--nuxeo-app-top, 0) + var(--nuxeo-app-bottom, 0)));
+            }
+
+            .task-box {
+                line-height: 155%;
+            }
+
+            .task-box + .task-box {
+                border-top: 1px solid var(--divider-color);
+            }
+
+            .task-due-date {
+                opacity: 0.5;
+                margin-right: 0.5rem;
+            }
+
+            .taskDoc .doc-title,
+            .date {
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                max-width: 85%;
+                overflow: hidden;
+            }
+
+            .date {
+                color: var(--nuxeo-warn-text);
+            }
+
+            .list-item {
+                cursor: pointer;
+                padding: 1em;
+                border-bottom: 1px solid var(--nuxeo-border);
+            }
+
+            .list-item:hover {
+                @apply --nuxeo-block-hover;
+            }
+
+            .list-item.selected,
+            .list-item:focus,
+            .list-item.selected:focus {
+                @apply --nuxeo-block-selected;
+            }
+
+            nuxeo-data-list {
+                display: block;
+                position: absolute;
+                left: 0;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                min-height: auto;
+            }
+
+            .task-name {
+                font-weight: bold;
+            }
+
+            .horizontal {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+            }
+        </style>
+
+        <div class="header">
+            <h5>[[i18n('app.tasks')]]</h5>
+        </div>
+
+        <nuxeo-operation id="getAllActiveTasks" op="Mle.WorkflowTaskGetAllActive"
+                         params="[[_opParams(activeOnly)]]"></nuxeo-operation>
+
+        <paper-checkbox name="activeOnly" checked="{{activeOnly}}">
+            only active {{activeOnly}}
+        </paper-checkbox>
+
+        <div class="container">
+            <nuxeo-data-list
+                    items="[[items]]"
+                    id="list"
+                    as="task"
+                    selected-item="{{_selection}}"
+                    empty-label="[[i18n('tasksList.noTasks')]]"
+                    selection-enabled
+                    select-on-tap
+            >
+                <template>
+                    <div tabindex$="{{tabIndex}}" class$="[[_computedClass(selected)]]">
+                        <div class="task-box">
+                            <div class="horizontal layout center">
+                                <span class="task-name">name = [[i18n(task.name)]]</span>
+                            </div>
+                            <div>
+                                <div class="taskDoc horizontal">
+                                    <span class="doc-title">[[task.targetDocumentIds.0.title]]</span>
+                                </div>
+                                <div class="horizontal">
+                                    <span class="task-due-date">[[i18n('tasksList.dueDate')]]</span>
+                                    <span class="date">
+                                  <nuxeo-date datetime="[[task.dueDate]]" format="relative"></nuxeo-date>
+                                </span>
+                                </div>
+                            </div>
+                            <div class="horizontal">
+                                <span>wf name = [[i18n(task.workflowModelName)]]</span>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </nuxeo-data-list>
+        </div>
+
+    </template>
+
+    <script>
+      Polymer({
+        is: 'mle-tasks-drawer',
+        behaviors: [Nuxeo.LayoutBehavior],
+        properties: {
+          name: {
+            type: String,
+          },
+          currentTask: {
+            type: Object,
+          },
+          items: {
+            type: Array,
+            value: [],
+          },
+          current: {
+            type: Object,
+            observer: '_currentChanged',
+          },
+          activeOnly: {
+            type: Boolean,
+            value: true,
+            observer: '_changeActiveOnly',
+          },
+
+          _selection: {
+            type: Object,
+            observer: '_selectionChanged',
+          },
+        },
+
+        async ready () {
+
+          const nuxeoApp = document.querySelector('nuxeo-app');
+          const self = this;
+          console.log('mle-tasks-drawer', nuxeoApp);
+          console.log('mle-tasks-drawer > nuxeoApp.taskCount :', nuxeoApp.taskCount, ' vs ', self.items.length);
+
+          nuxeoApp._fetchTaskCount = function () {
+            this.taskCount = self.items.length;
+            //this.$.tasksProvider.fetch().then((response) => {
+            //  console.log('tasksProvider fetched', response, self.items.length);
+            //  this.taskCount = self.items.length;
+            //});
+          };
+
+          /*
+          nuxeoApp._navigate = function (e) {
+            console.log('_navigate ', e);
+            if (e.detail.doc) {
+              this.navigateTo(e.detail.doc, e.detail.docAction);
+              if (e.detail.isFromCollection) {
+                this.$$('#collectionsForm').displayMembers(e.detail.srcDoc, e.detail.index);
+              }
+            }
+            if (e.detail.task) {
+              const tasksDrawer = this.$$('mle-tasks-drawer');
+              if (!tasksDrawer || !tasksDrawer.visible) {
+                this.navigateTo('tasks', e.detail.task.id);
+              } else {
+                tasksDrawer.$.tasks.selectTask(e.detail.index, e.detail.task, e.detail.params);
+              }
+            }
+          };
+
+          nuxeoApp._refreshAndFetchTasks = function () {
+
+            console.log('_refreshAndFetchTasks ');
+            // let's refresh the current document since it might have been changed (ex: state and version)
+            if (this.currentDocument) {
+              this._loadDocument(this.currentDocument).then(() => {
+                this.show('browse');
+              }).catch((err) => {
+                if (err['entity-type'] && err['entity-type'] === 'exception' && err.status === 403) {
+                  this.loading = false;
+                  this.navigateTo('tasks');
+                } else {
+                  this.showError(err.status, this.i18n('browse.error'), err.message);
+                }
+              });
+            }
+            this._fetchTaskCount();
+            this._resetTaskSelection();
+            const tasksDrawer = this.$$('nuxeo-tasks-drawer');
+            if (tasksDrawer.visible) {
+              tasksDrawer.$.tasks.fetch();
+            }
+          };
+
+*/
+          await this._fetchItems();
+
+        },
+
+        _selectionChanged () {
+          if (this._selection && !this.noNavigation) {
+            this.navigateTo('tasks', this._selection.id);
+          }
+        },
+
+        selectTask (index, task, { offset, pageSize }) {
+          let fetch;
+          const tasks = this.$.list.items;
+          if (tasks.find((item) => item.id === task.id)) {
+            fetch = Promise.resolve();
+          } else {
+            fetch = this.fetch(offset, pageSize);
+          }
+          fetch.then(() => {
+            if (tasks[index] && tasks[index].id !== task.id) {
+              index = tasks.findIndex((item) => item.id === task.id);
+            }
+            this.$.list.scrollToIndex(index);
+            this.$.list.selectIndex(index);
+          });
+        },
+
+        _currentChanged (newVal, oldVal) {
+          if (
+            (newVal && oldVal && newVal.id === oldVal.id) ||
+            (this._selection && newVal && this._selection.id === newVal.id)
+          ) {
+            return;
+          }
+          const tasks = this.$.list.items;
+          if (newVal && tasks) {
+            for (let i = 0; i < tasks.length; i++) {
+              if (tasks[i].id === newVal.id) {
+                this.$.list.selectItem(tasks[i]);
+                break;
+              }
+            }
+          } else if (oldVal) {
+            const task = tasks.find((item) => item.id === oldVal.id);
+            // make sure this task still exists to avoid iron-list exceptions
+            if (task) {
+              this.$.list.deselectItem(task);
+            }
+          }
+        },
+
+        _computedClass (isSelected) {
+          let classes = 'list-item';
+          if (isSelected) {
+            classes += ' selected';
+          }
+          return classes;
+        },
+
+        async _fetchItems () {
+
+          const nuxeoApp = document.querySelector('nuxeo-app');
+          const response = await this.$.getAllActiveTasks.execute();
+          console.log('response', response);
+          const items = response.entries.map(e => {
+            console.log('item : ', e);
+            return {
+              name: e.properties['nt:name'],
+              workflowModelName: e.uid,
+              id: e.uid,
+            };
+          });
+          this.set('items', items);
+          await nuxeoApp._fetchTaskCount();
+        },
+
+        _opParams (activeOnly) {
+          console.log('_opParams ?', activeOnly);
+          return {
+            activeOnly,
+          };
+        },
+
+        async _changeActiveOnly () {
+          await this._fetchItems();
+        },
+
+      });
+    </script>
+</dom-module>
+

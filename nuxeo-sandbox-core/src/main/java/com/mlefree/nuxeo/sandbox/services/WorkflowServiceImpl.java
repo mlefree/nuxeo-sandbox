@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -88,7 +89,7 @@ public class WorkflowServiceImpl extends DefaultComponent implements WorkflowSer
         Boolean active = (Boolean) vars.get(WF_ACTIVE_STATUS);
         Date lastUpdate = (Date) vars.get(WF_ACTIVE_LAST_UPDATE);
         long seconds = 0;
-        if (vars.get(WF_ACTIVE_SECONDS_COUNT) != null ) {
+        if (vars.get(WF_ACTIVE_SECONDS_COUNT) != null) {
             seconds = (long) vars.get(WF_ACTIVE_SECONDS_COUNT);
         }
 
@@ -109,36 +110,46 @@ public class WorkflowServiceImpl extends DefaultComponent implements WorkflowSer
     }
 
     @Override
-    public DocumentModelList getAllActiveWorkflow(CoreSession session) {
+    public DocumentModelList getAllRunningWorkflow(CoreSession session, boolean activeOnly) {
 
         DocumentModelList activeWfs = new DocumentModelListImpl(0);
         List<DocumentRoute> wfs = getAllWorkflows(session);
+        String filter = "";
 
         for (DocumentRoute wf : wfs) {
-            String workflowName = wf.getName();
-            final String query = String.format(
-                    "SELECT * FROM %s WHERE ecm:currentLifeCycleState = '%s' AND %s:active = 1",
-                    DocumentRoutingConstants.DOCUMENT_ROUTE_DOCUMENT_TYPE,
-                    DocumentRouteElement.ElementLifeCycleState.running, "var_" + workflowName);
-            activeWfs.addAll(session.query(query));
+            try {
+                String workflowName = wf.getName();
+                if (activeOnly) {
+                    filter = String.format("AND %s:active = 1", "var_" + workflowName);
+                }
+                final String query = String.format(
+                        "SELECT * FROM %s WHERE ecm:currentLifeCycleState = '%s' AND ecm:name = '%s' %s",
+                        DocumentRoutingConstants.DOCUMENT_ROUTE_DOCUMENT_TYPE,
+                        DocumentRouteElement.ElementLifeCycleState.running, workflowName, filter);
+                activeWfs.addAll(session.query(query));
+            } catch (Exception ignored) {
+            }
         }
 
         return activeWfs;
     }
 
     @Override
-    public DocumentModelList getAllActiveTasks(CoreSession session) {
+    public DocumentModelList getAllRunningTasks(CoreSession session, boolean activeOnly) {
 
         TaskService taskService = Framework.getService(TaskService.class);
         List<Task> tasks = taskService.getAllCurrentTaskInstances(session, Collections.emptyList());
+        Stream<Task> tasksStream = tasks.stream();
 
-        return tasks.stream()
-                    .filter(task -> {
-                        DocumentModel wfDoc = session.getDocument(new IdRef(task.getProcessId()));
-                        return (boolean) wfDoc.getAdapter(GraphRoute.class).getVariables().get("active");
-                    })
-                    .map(Task::getDocument)
-                    .collect(Collectors.toCollection(DocumentModelListImpl::new));
+        if (activeOnly) {
+            tasksStream = tasksStream.filter(task -> {
+                DocumentModel wfDoc = session.getDocument(new IdRef(task.getProcessId()));
+                Boolean active = (Boolean) wfDoc.getAdapter(GraphRoute.class).getVariables().get("active");
+                return TRUE.equals(active);
+            });
+        }
+
+        return tasksStream.map(Task::getDocument).collect(Collectors.toCollection(DocumentModelListImpl::new));
     }
 
 }

@@ -8,24 +8,31 @@ import static org.junit.Assert.assertEquals;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import com.mlefree.nuxeo.sandbox.workflows.AbstractIntegrationTestWorkflow;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.nuxeo.ecm.automation.AutomationService;
 import org.nuxeo.ecm.automation.OperationContext;
 import org.nuxeo.ecm.automation.OperationException;
+import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.PathRef;
 import org.nuxeo.ecm.platform.routing.api.DocumentRoute;
+import org.nuxeo.runtime.test.runner.Features;
+import org.nuxeo.runtime.test.runner.FeaturesRunner;
 
-import com.mlefree.nuxeo.sandbox.workflows.AbstractIntegrationTestWorkflow;
+import com.mlefree.nuxeo.sandbox.features.MleFeature;
+import com.mlefree.nuxeo.sandbox.features.StudioWorkflowIntegrationTestFeature;
 
 import junit.framework.TestCase;
 
-public class TestWorkflowGetAllActive extends AbstractIntegrationTestWorkflow {
+public class TestWorkflowTaskGetAllActive extends AbstractIntegrationTestWorkflow {
 
     @Test
     public void shouldGetAll() throws OperationException {
-        List<DocumentRoute> wfs = getAllWorkflows(session);
-        TestCase.assertEquals(2, wfs.size());
 
         DocumentModel docA = session.getDocument(new PathRef(FILE_A_PATH));
         launchWorkflow(session, docA, ACTIVE_COMPATIBLE_WF_01);
@@ -34,13 +41,15 @@ public class TestWorkflowGetAllActive extends AbstractIntegrationTestWorkflow {
         launchWorkflow(session, docB, ACTIVE_NOT_COMPATIBLE_WF_01);
 
         OperationContext ctx = new OperationContext(session);
-        DocumentModelList activeWfs = (DocumentModelList) automationService.run(ctx, WorkflowGetAllActive.ID);
+        DocumentModelList activeTasks = (DocumentModelList) automationService.run(ctx, WorkflowTaskGetAllActive.ID);
 
-        assertEquals(1, activeWfs.size());
+        assertEquals(1, activeTasks.size());
+
     }
 
     @Test
     public void shouldGetAllWithoutFilter() throws OperationException {
+
         DocumentModel docA = session.getDocument(new PathRef(FILE_A_PATH));
         launchWorkflow(session, docA, ACTIVE_COMPATIBLE_WF_01);
 
@@ -50,9 +59,11 @@ public class TestWorkflowGetAllActive extends AbstractIntegrationTestWorkflow {
         OperationContext ctx = new OperationContext(session);
         HashMap<String, String> params = new HashMap<>();
         params.put("activeOnly", "false");
-        DocumentModelList activeWfs = (DocumentModelList) automationService.run(ctx, WorkflowGetAllActive.ID, params);
+        DocumentModelList activeTasks = (DocumentModelList) automationService.run(ctx, WorkflowTaskGetAllActive.ID,
+                params);
 
-        assertEquals(2, activeWfs.size());
+        assertEquals(2, activeTasks.size());
+
     }
 
 }

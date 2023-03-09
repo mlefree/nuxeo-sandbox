@@ -33,6 +33,8 @@ public class MleRepositoryInit implements RepositoryInit {
 
     static public final String FILE_A_PATH = "/Root/Folder/fileA";
 
+    static public final String FILE_B_PATH = "/Root/Folder/fileB";
+
     @Override
     public void populate(CoreSession session) {
         initGroupsUsersACL(session);
@@ -73,9 +75,11 @@ public class MleRepositoryInit implements RepositoryInit {
                 session.createDocument(folder);
 
                 // Files
-                // FILE_A_PATH
                 DocumentModel fileA = TestUtils.createDummyFileDocument(session, folder.getPathAsString(), "fileA");
                 assert fileA.getPathAsString().equals(FILE_A_PATH) : "Bad path " + fileA.getPathAsString();
+                DocumentModel fileB = TestUtils.createDummyFileDocument(session, folder.getPathAsString(), "fileB");
+                assert fileB.getPathAsString().equals(FILE_B_PATH) : "Bad path " + fileB.getPathAsString();
+
                 session.save();
             } catch (Exception ex) {
                 log.error("Exception during RepositoryInit", ex);
