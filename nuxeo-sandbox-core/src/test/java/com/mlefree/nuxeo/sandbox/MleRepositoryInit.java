@@ -1,12 +1,13 @@
 package com.mlefree.nuxeo.sandbox;
 
-import com.mlefree.nuxeo.sandbox.utils.TestConstants;
-import com.mlefree.nuxeo.sandbox.utils.TestUtils;
-import com.mlefree.nuxeo.sandbox.utils.UsersConfiguration;
-import com.mlefree.nuxeo.sandbox.utils.UsersGroup;
+import static com.mlefree.nuxeo.sandbox.utils.TestConstants.MEMBERS;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.Before;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.NuxeoGroup;
@@ -18,14 +19,11 @@ import org.nuxeo.ecm.core.test.annotations.RepositoryInit;
 import org.nuxeo.ecm.platform.usermanager.UserManager;
 import org.nuxeo.ecm.platform.usermanager.exceptions.UserAlreadyExistsException;
 import org.nuxeo.runtime.api.Framework;
-import org.nuxeo.runtime.transaction.TransactionHelper;
 
-import javax.inject.Inject;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Stream;
-
-import static com.mlefree.nuxeo.sandbox.utils.TestConstants.MEMBERS;
+import com.mlefree.nuxeo.sandbox.utils.TestConstants;
+import com.mlefree.nuxeo.sandbox.utils.TestUtils;
+import com.mlefree.nuxeo.sandbox.utils.UsersConfiguration;
+import com.mlefree.nuxeo.sandbox.utils.UsersGroup;
 
 public class MleRepositoryInit implements RepositoryInit {
 

@@ -2,31 +2,30 @@ package com.mlefree.nuxeo.sandbox.features;
 
 import static com.mlefree.nuxeo.sandbox.constants.StudioConstant.BUNDLE_NAME;
 
-import com.mlefree.nuxeo.sandbox.MleRepositoryInit;
-import org.junit.runner.RunWith;
 import org.nuxeo.ecm.automation.test.AutomationFeature;
 import org.nuxeo.ecm.core.api.CloseableCoreSession;
 import org.nuxeo.ecm.core.api.CoreInstance;
 import org.nuxeo.ecm.core.event.EventService;
 import org.nuxeo.ecm.core.test.annotations.Granularity;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
-import org.nuxeo.ecm.platform.test.PlatformFeature;
 import org.nuxeo.ecm.platform.usermanager.UserManager;
 import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
-import org.nuxeo.runtime.test.runner.FeaturesRunner;
 import org.nuxeo.runtime.test.runner.RunnerFeature;
 import org.nuxeo.runtime.transaction.TransactionHelper;
 
+import com.mlefree.nuxeo.sandbox.MleRepositoryInit;
 
 @Features({ AutomationFeature.class })
-@RepositoryConfig(init = MleRepositoryInit.class, cleanup = Granularity.METHOD)
-@Deploy({ "com.mlefree.nuxeo.sandbox.nuxeo-sandbox-core", "org.nuxeo.ecm.default.config",
-        "org.nuxeo.ecm.platform.usermanager" })
+@Deploy({ "com.mlefree.nuxeo.sandbox.nuxeo-sandbox-core" })
+@Deploy("org.nuxeo.ecm.core:OSGI-INF/uidgenerator-service.xml")
+@Deploy("org.nuxeo.ecm.core:OSGI-INF/uidgenerator-keyvalue-config.xml")
+@Deploy("com.mlefree.nuxeo.sandbox.nuxeo-sandbox-core:test-uidseq.xml")
 // @PartialDeploy(bundle = BUNDLE_NAME, extensions = { TargetExtensions.ContentModel.class,
-// TargetExtensions.ContentTemplate.class, })
+// TargetExtensions.ContentTemplate.class })
 @Deploy({ BUNDLE_NAME })
+@RepositoryConfig(init = MleRepositoryInit.class, cleanup = Granularity.METHOD)
 public class MleFeature implements RunnerFeature {
 
     public static CloseableCoreSession openSessionAsUser(String userName) {
