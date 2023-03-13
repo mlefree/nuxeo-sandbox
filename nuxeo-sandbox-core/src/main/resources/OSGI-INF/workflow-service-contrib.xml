@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<component name="com.mlefree.nuxeo.sandbox.services.WorkflowService" version="1.0">
+
+  <implementation class="com.mlefree.nuxeo.sandbox.services.WorkflowServiceImpl" />
+
+  <service>
+    <provide interface="com.mlefree.nuxeo.sandbox.services.WorkflowService" />
+  </service>
+</component>

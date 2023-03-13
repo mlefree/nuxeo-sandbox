@@ -1,0 +1,23 @@
+
+<link rel="import" href="elements/mle-tasks-drawer.html">
+
+<nuxeo-slot-content name="tasksDrawerItem" slot="DRAWER_ITEMS" order="50" disabled>
+</nuxeo-slot-content>
+
+<nuxeo-slot-content name="tasksActiveDrawerItem" slot="DRAWER_ITEMS" order="50" >
+  <template>
+    <nuxeo-menu-icon
+            name="tasksActive"
+            icon="nuxeo:tasks"
+            id="menuTasksActive"
+            label="app.tasks"
+            badge="[[taskCount]]"
+    ></nuxeo-menu-icon>
+  </template>
+</nuxeo-slot-content>
+
+<nuxeo-slot-content name="tasksActiveDrawerPage" slot="DRAWER_PAGES">
+  <template>
+    <mle-tasks-drawer name="tasksActive" current-task="[[currentTask]]"></mle-tasks-drawer>
+  </template>
+</nuxeo-slot-content>

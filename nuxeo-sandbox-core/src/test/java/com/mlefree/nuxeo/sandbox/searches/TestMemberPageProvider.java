@@ -10,7 +10,6 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.nuxeo.ecm.automation.test.AutomationFeature;
 import org.nuxeo.ecm.automation.test.EmbeddedAutomationServerFeature;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.platform.query.api.PageProvider;
@@ -19,17 +18,12 @@ import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
 
-import com.mlefree.nuxeo.sandbox.MleFeature;
-import com.mlefree.nuxeo.sandbox.RepositoryElasticSearchFeature;
+import com.mlefree.nuxeo.sandbox.features.MleFeature;
+import com.mlefree.nuxeo.sandbox.features.RepositoryElasticSearchFeature;
 
 @RunWith(FeaturesRunner.class)
-@Features({ MleFeature.class, AutomationFeature.class, EmbeddedAutomationServerFeature.class,
+@Features({ MleFeature.class, EmbeddedAutomationServerFeature.class,
         RepositoryElasticSearchFeature.class })
-// @Deploy("org.nuxeo.ecm.automation.server")
-// @Deploy("org.nuxeo.ecm.automation.io")
-// @Deploy("org.nuxeo.ecm.platform.forms.layout.export")
-// @Deploy("org.nuxeo.ecm.webengine.core")
-// @Deploy("org.nuxeo.ecm.webengine.jaxrs")
 @Deploy("org.nuxeo.elasticsearch.core")
 @Deploy("org.nuxeo.ecm.platform.query.api")
 @Deploy("org.nuxeo.ecm.core.management")

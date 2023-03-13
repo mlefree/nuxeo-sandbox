@@ -17,7 +17,7 @@
  *     Nuxeo
  */
 
-package com.mlefree.nuxeo.sandbox;
+package com.mlefree.nuxeo.sandbox.features;
 
 import org.nuxeo.ecm.core.test.annotations.Granularity;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;

@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.mlefree.nuxeo.sandbox</groupId>
     <artifactId>nuxeo-sandbox-parent</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.162-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 

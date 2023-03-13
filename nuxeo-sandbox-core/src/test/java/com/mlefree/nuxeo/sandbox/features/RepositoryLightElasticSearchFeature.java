@@ -17,7 +17,7 @@
  *     bdelbosc
  */
 
-package com.mlefree.nuxeo.sandbox;
+package com.mlefree.nuxeo.sandbox.features;
 
 import org.junit.runners.model.FrameworkMethod;
 import org.nuxeo.ecm.core.test.CoreFeature;

@@ -1,6 +1,6 @@
 package com.mlefree.nuxeo.sandbox.operations;
 
-import static com.mlefree.nuxeo.sandbox.MleFeature.openSessionAsUser;
+import static com.mlefree.nuxeo.sandbox.features.MleFeature.openSessionAsUser;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.nuxeo.ecm.collections.api.CollectionConstants.DOCUMENT_COLLECTION_IDS_PROPERTY_NAME;
@@ -17,7 +17,6 @@ import org.junit.runner.RunWith;
 import org.nuxeo.ecm.automation.AutomationService;
 import org.nuxeo.ecm.automation.OperationContext;
 import org.nuxeo.ecm.automation.OperationException;
-import org.nuxeo.ecm.automation.test.AutomationFeature;
 import org.nuxeo.ecm.collections.core.test.CollectionFeature;
 import org.nuxeo.ecm.core.api.CloseableCoreSession;
 import org.nuxeo.ecm.core.api.CoreSession;
@@ -27,10 +26,10 @@ import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
 import org.nuxeo.runtime.test.runner.TransactionalFeature;
 
-import com.mlefree.nuxeo.sandbox.MleFeature;
+import com.mlefree.nuxeo.sandbox.features.MleFeature;
 
 @RunWith(FeaturesRunner.class)
-@Features({ MleFeature.class, AutomationFeature.class, CollectionFeature.class })
+@Features({ MleFeature.class, CollectionFeature.class})
 public class TestAddCollectionRelation {
 
     @Inject

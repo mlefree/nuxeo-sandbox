@@ -10,8 +10,8 @@ nuxeo bootstrap multi-module
 # > package :
 nuxeo bootstrap package
 
-# > link nuxeo studio mleprevost-SANDBOX :
-nuxeo studio
+# > link nuxeo constants (ex: mleprevost-SANDBOX) :
+nuxeo constants
 ```
 
 
@@ -104,6 +104,23 @@ Remarks/Limitations/Drawbacks  :
    good idea though NXQL query (page provider etc...) - not supported by Nuxeo; It's preferable to use dedicated
    operations.
 3. Create a document for each relation increase database size.
+
+### Workflow : active/resume pattern
+
+
+first, fix build : https://jira.nuxeo.com/browse/SUPNXP-43154
+
+Studio needs a WF with fields :
+- `active` : boolean
+- `lastActiveDate` : date
+
+if any task node has the same fields, it is replicated
+
+operations :
+- `ddd` : get All active tasks
+
+Audit tracking
+
 
 ## Contact
 
