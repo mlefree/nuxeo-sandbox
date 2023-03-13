@@ -1,0 +1,173 @@
+<!--
+`nuxeo-wftest-20230228113720043-accept-reject-task-layout`
+@group Nuxeo UI
+@element nuxeo-wftest-20230228113720043-accept-reject-task-layout
+-->
+<dom-module id="nuxeo-wftest-20230228113720043-accept-reject-task-layout">
+    <template>
+        <style include="nuxeo-styles"></style>
+
+        <div role="widget">
+            <label>Directive</label>
+            <div name="directive">[[task.directive]]</div>
+        </div>
+        <div role="widget">
+            <label>Created</label>
+            <nuxeo-date datetime="[[task.created]]" name="created"></nuxeo-date>
+        </div>
+
+        <h3>WF TEST: Resume/Activate, Reassign</h3>
+
+        <nuxeo-operation id="opResume" op="Mle.WorkflowResume"></nuxeo-operation>
+        <nuxeo-operation id="opActivate" op="Mle.WorkflowActivate"></nuxeo-operation>
+        <nuxeo-operation id="opIsActive" op="Mle.WorkflowTaskIsActive"></nuxeo-operation>
+
+        <span hidden$="[[!_isActive]]">WF is active :</span>
+        <span hidden$="[[_isActive]]">WF is on hold :</span>
+        <paper-button
+                id="resumeBtn"
+                class="primary"
+                on-tap="_resume"
+                hidden$="[[!_isActive]]"
+        >Resume
+        </paper-button>
+        <paper-button
+                id="activeBtn"
+                class="primary"
+                on-tap="_activate"
+                hidden$="[[_isActive]]"
+        >Activate
+        </paper-button>
+        <br/>
+        <br/>
+
+        <span>Reassign :</span>
+        <!-- Need a dialog before ?
+        <nuxeo-document-task-assignment-popup
+            id="assignmentDialog"
+            task="[[task]]"
+            action="[[action]]"
+          ></nuxeo-document-task-assignment-popup>
+          -->
+        <nuxeo-resource id="taskAssignment" path="/task/[[task.id]]/[[_action]]"
+                        params="[[_assignmentParams]]"></nuxeo-resource>
+        <paper-button
+                id="reassignBtn"
+                class="primary"
+                noink
+                dialog-confirm
+                on-tap="_toggleAssignment"
+                data-args="reassign"
+                hidden$="[[!_isTaskReassignable(task)]]"
+        >[[i18n('tasks.reassign')]] to me
+        </paper-button>
+        <hr/>
+
+    </template>
+
+    <script>
+      Polymer({
+        is: 'nuxeo-wftest-20230228113720043-accept-reject-task-layout',
+        behaviors: [Nuxeo.LayoutBehavior],
+        properties: {
+
+          task: {
+            type: Object,
+            observer: '_taskChanged',
+          },
+          document: {
+            type: Object,
+          },
+
+          _isActive: {
+            type: Boolean,
+            value: true,
+          },
+          _action: {
+            type: String,
+          },
+          _assignmentParams: {
+            type: Object,
+          },
+          _actors: {
+            type: Array,
+            value: [],
+          },
+
+        },
+
+        ready: function () {
+          // remove delegate/reassign header + graph link
+          const taskLayout = this._getParentByNodeName(this, 'nuxeo-document-task');
+          const header = taskLayout?.shadowRoot.querySelector('#task-body > iron-pages > div > div.heading');
+          const graph = taskLayout?.shadowRoot.querySelector('#task-body > iron-pages > div > a');
+          if (header) {
+            header.style = 'visibility:hidden; height: 0;';
+          }
+          if (graph) {
+            graph.style = 'visibility:hidden';
+          }
+        },
+
+        _getParentByNodeName (node, nameToFind) {
+          if (!node || !nameToFind) return null;
+          if (node.nodeName === nameToFind.toUpperCase()) return node;
+          if (node.nodeType !== 11) {
+            return this._getParentByNodeName(node.parentNode, nameToFind);
+          }
+          return this._getParentByNodeName(node.host, nameToFind);
+        },
+
+        async _taskChanged () {
+          this.$.opIsActive.input = this.task.id;
+          const resp = await this.$.opIsActive.execute();
+          this._isActive = resp.value;
+
+          this._actors = [];
+          const appUser = document.querySelector('nuxeo-app')?.currentUser;
+          if (appUser && appUser.id) {
+            this._actors.push(appUser.id);
+          }
+        },
+
+        async _resume () {
+          this.$.opResume.input = this.task.workflowInstanceId;
+          await this.$.opResume.execute();
+          this.fire('workflowTaskProcess', { task: this.task });
+        },
+
+        async _activate () {
+          this.$.opActivate.input = this.task.workflowInstanceId;
+          await this.$.opActivate.execute();
+          this.fire('workflowTaskProcess', { task: this.task });
+        },
+
+        async _toggleAssignment (e) {
+
+          if (!this._actors || this._actors.length === 0) {
+            alert('Not possible to assign');
+            return;
+          }
+
+          this._action = e.target.dataset.args;
+          // dialog needed ? => this.$.assignmentDialog.openPopup();
+          //  or direct reassign :
+          this._assignmentParams = {};
+          this._assignmentParams.comment = 'assigned';
+          this._assignmentParams['actors'] = this._actors;
+          try {
+            const task = await this.$.taskAssignment.put();
+            this.fire('workflowTaskAssignment', { task });
+          } catch (e) {
+            alert(e);
+          }
+
+        },
+
+        _isTaskReassignable (task) {
+          return task?.state !== 'ended' && task?.taskInfo?.allowTaskReassignment;
+        },
+
+      });
+    </script>
+</dom-module>

@@ -15,4 +15,6 @@ public interface WorkflowService {
     DocumentModelList getAllRunningWorkflow(CoreSession session, boolean activeOnly);
 
     DocumentModelList getAllRunningTasks(CoreSession session, boolean activeOnly);
+
+    boolean isTaskActive(CoreSession session, DocumentModel taskDoc);
 }

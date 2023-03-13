@@ -6,7 +6,9 @@ import static com.mlefree.nuxeo.sandbox.utils.WorkflowUtils.getAllWorkflows;
 import static java.lang.Boolean.TRUE;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -144,12 +146,33 @@ public class WorkflowServiceImpl extends DefaultComponent implements WorkflowSer
         if (activeOnly) {
             tasksStream = tasksStream.filter(task -> {
                 DocumentModel wfDoc = session.getDocument(new IdRef(task.getProcessId()));
-                Boolean active = (Boolean) wfDoc.getAdapter(GraphRoute.class).getVariables().get("active");
+                Boolean active = (Boolean) wfDoc.getAdapter(GraphRoute.class).getVariables().get(WF_ACTIVE_STATUS);
                 return TRUE.equals(active);
             });
         }
 
-        return tasksStream.map(Task::getDocument).collect(Collectors.toCollection(DocumentModelListImpl::new));
+        return tasksStream.map(task -> {
+            DocumentModel doc = task.getDocument();
+            // DocumentModel wfDoc = session.getDocument(new IdRef(task.getProcessId()));
+            // String docTitle = null;
+            // if (task.getTargetDocumentsIds().size() == 1) {
+            // DocumentModel attachedDoc = session.getDocument(new IdRef(task.getTargetDocumentsIds().get(0)));
+            // docTitle = attachedDoc.getTitle();
+            // }
+            // doc.putContextData("workflowModelName", wfDoc.getTitle());
+            // doc.putContextData("docTitle", docTitle);
+            return doc;
+        })
+                          .sorted(Comparator.comparing(doc -> (Calendar) doc.getPropertyValue("dc:created")))
+                          .collect(Collectors.toCollection(DocumentModelListImpl::new));
+    }
+
+    @Override
+    public boolean isTaskActive(CoreSession session, DocumentModel taskDoc) {
+        Task task = taskDoc.getAdapter(Task.class);
+        DocumentModel wfDoc = session.getDocument(new IdRef(task.getProcessId()));
+        Boolean active = (Boolean) wfDoc.getAdapter(GraphRoute.class).getVariables().get(WF_ACTIVE_STATUS);
+        return TRUE.equals(active);
     }
 
 }

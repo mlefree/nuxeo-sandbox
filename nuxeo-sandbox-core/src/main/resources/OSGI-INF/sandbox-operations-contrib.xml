@@ -10,6 +10,7 @@
         <operation class="com.mlefree.nuxeo.sandbox.operations.WorkflowResume"/>
         <operation class="com.mlefree.nuxeo.sandbox.operations.WorkflowGetAllActive"/>
         <operation class="com.mlefree.nuxeo.sandbox.operations.WorkflowTaskGetAllActive"/>
+        <operation class="com.mlefree.nuxeo.sandbox.operations.WorkflowTaskIsActive"/>
     </extension>
 
 </component>

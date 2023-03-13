@@ -1,43 +1,29 @@
 package com.mlefree.nuxeo.sandbox.workflows;
 
-import static com.mlefree.nuxeo.sandbox.features.MleFeature.openSessionAsUser;
 import static com.mlefree.nuxeo.sandbox.features.MleFeature.waitForAsyncExec;
-import static com.mlefree.nuxeo.sandbox.features.StudioWorkflowFeature.followWorkflowTransition;
-import static com.mlefree.nuxeo.sandbox.features.StudioWorkflowFeature.getRelatedWithdrawableWorkflows;
-import static com.mlefree.nuxeo.sandbox.features.StudioWorkflowFeature.getWorkflowVariables;
 import static com.mlefree.nuxeo.sandbox.features.StudioWorkflowFeature.startWorkflowAndGetRouteId;
-import static com.mlefree.nuxeo.sandbox.utils.UsersConfiguration.ADMIN;
-import static com.mlefree.nuxeo.sandbox.utils.UsersConfiguration.MEMBER_X;
 import static com.mlefree.nuxeo.sandbox.utils.WorkflowUtils.getDocumentRelatedWorkflows;
 import static org.junit.Assert.assertEquals;
 
-import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
-
 import javax.inject.Inject;
 
-import com.mlefree.nuxeo.sandbox.operations.WorkflowActivate;
-import com.mlefree.nuxeo.sandbox.operations.WorkflowResume;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.nuxeo.ecm.automation.AutomationService;
 import org.nuxeo.ecm.automation.OperationContext;
 import org.nuxeo.ecm.automation.OperationException;
-import org.nuxeo.ecm.core.api.CloseableCoreSession;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.ecm.core.api.PathRef;
 import org.nuxeo.ecm.platform.routing.api.DocumentRoute;
 import org.nuxeo.ecm.platform.routing.api.DocumentRoutingService;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
-import org.nuxeo.runtime.test.runner.TransactionalFeature;
 
-import com.mlefree.nuxeo.sandbox.MleRepositoryInit;
 import com.mlefree.nuxeo.sandbox.features.MleFeature;
 import com.mlefree.nuxeo.sandbox.features.StudioWorkflowIntegrationTestFeature;
+import com.mlefree.nuxeo.sandbox.operations.WorkflowActivate;
+import com.mlefree.nuxeo.sandbox.operations.WorkflowResume;
 
 @RunWith(FeaturesRunner.class)
 @Features({ MleFeature.class, StudioWorkflowIntegrationTestFeature.class })

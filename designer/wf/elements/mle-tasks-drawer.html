@@ -89,8 +89,10 @@
             <h5>[[i18n('app.tasks')]]</h5>
         </div>
 
-        <nuxeo-operation id="getAllActiveTasks" op="Mle.WorkflowTaskGetAllActive"
-                         params="[[_opParams(activeOnly)]]"></nuxeo-operation>
+        <nuxeo-operation id="getAllActiveTasks"
+                         op="Mle.WorkflowTaskGetAllActive"
+                         params="[[_opParams(activeOnly)]]"
+                         enrichers="taskExtended"></nuxeo-operation>
 
         <paper-checkbox name="activeOnly" checked="{{activeOnly}}">
             only active {{activeOnly}}
@@ -110,11 +112,11 @@
                     <div tabindex$="{{tabIndex}}" class$="[[_computedClass(selected)]]">
                         <div class="task-box">
                             <div class="horizontal layout center">
-                                <span class="task-name">name = [[i18n(task.name)]]</span>
+                                <span class="task-name">[[i18n(task.name)]]</span>
                             </div>
                             <div>
                                 <div class="taskDoc horizontal">
-                                    <span class="doc-title">[[task.targetDocumentIds.0.title]]</span>
+                                    <span class="doc-title">[[task.docTitle]]</span>
                                 </div>
                                 <div class="horizontal">
                                     <span class="task-due-date">[[i18n('tasksList.dueDate')]]</span>
@@ -124,7 +126,7 @@
                                 </div>
                             </div>
                             <div class="horizontal">
-                                <span>wf name = [[i18n(task.workflowModelName)]]</span>
+                                <span>[[i18n(task.workflowModelName)]]</span>
                             </div>
                         </div>
                     </div>
@@ -165,90 +167,29 @@
           },
         },
 
+        listeners: {
+          'workflowTaskProcess': '_fetchItems',
+        },
+
         async ready () {
-
-          const nuxeoApp = document.querySelector('nuxeo-app');
           const self = this;
-          console.log('mle-tasks-drawer', nuxeoApp);
-          console.log('mle-tasks-drawer > nuxeoApp.taskCount :', nuxeoApp.taskCount, ' vs ', self.items.length);
 
+          // Nuxeo App Override
+          const nuxeoApp = document.querySelector('nuxeo-app');
           nuxeoApp._fetchTaskCount = function () {
             this.taskCount = self.items.length;
-            //this.$.tasksProvider.fetch().then((response) => {
-            //  console.log('tasksProvider fetched', response, self.items.length);
-            //  this.taskCount = self.items.length;
-            //});
+          };
+          nuxeoApp._workflowTaskProcess = function(e) {
+            self._fetchItems().then(resp => this.navigateTo('tasks', e.detail.task.id));
           };
 
-          /*
-          nuxeoApp._navigate = function (e) {
-            console.log('_navigate ', e);
-            if (e.detail.doc) {
-              this.navigateTo(e.detail.doc, e.detail.docAction);
-              if (e.detail.isFromCollection) {
-                this.$$('#collectionsForm').displayMembers(e.detail.srcDoc, e.detail.index);
-              }
-            }
-            if (e.detail.task) {
-              const tasksDrawer = this.$$('mle-tasks-drawer');
-              if (!tasksDrawer || !tasksDrawer.visible) {
-                this.navigateTo('tasks', e.detail.task.id);
-              } else {
-                tasksDrawer.$.tasks.selectTask(e.detail.index, e.detail.task, e.detail.params);
-              }
-            }
-          };
-
-          nuxeoApp._refreshAndFetchTasks = function () {
-
-            console.log('_refreshAndFetchTasks ');
-            // let's refresh the current document since it might have been changed (ex: state and version)
-            if (this.currentDocument) {
-              this._loadDocument(this.currentDocument).then(() => {
-                this.show('browse');
-              }).catch((err) => {
-                if (err['entity-type'] && err['entity-type'] === 'exception' && err.status === 403) {
-                  this.loading = false;
-                  this.navigateTo('tasks');
-                } else {
-                  this.showError(err.status, this.i18n('browse.error'), err.message);
-                }
-              });
-            }
-            this._fetchTaskCount();
-            this._resetTaskSelection();
-            const tasksDrawer = this.$$('nuxeo-tasks-drawer');
-            if (tasksDrawer.visible) {
-              tasksDrawer.$.tasks.fetch();
-            }
-          };
-
-*/
           await this._fetchItems();
-
         },
 
         _selectionChanged () {
           if (this._selection && !this.noNavigation) {
             this.navigateTo('tasks', this._selection.id);
           }
-        },
-
-        selectTask (index, task, { offset, pageSize }) {
-          let fetch;
-          const tasks = this.$.list.items;
-          if (tasks.find((item) => item.id === task.id)) {
-            fetch = Promise.resolve();
-          } else {
-            fetch = this.fetch(offset, pageSize);
-          }
-          fetch.then(() => {
-            if (tasks[index] && tasks[index].id !== task.id) {
-              index = tasks.findIndex((item) => item.id === task.id);
-            }
-            this.$.list.scrollToIndex(index);
-            this.$.list.selectIndex(index);
-          });
         },
 
         _currentChanged (newVal, oldVal) {
@@ -284,16 +225,15 @@
         },
 
         async _fetchItems () {
-
           const nuxeoApp = document.querySelector('nuxeo-app');
           const response = await this.$.getAllActiveTasks.execute();
-          console.log('response', response);
           const items = response.entries.map(e => {
-            console.log('item : ', e);
             return {
-              name: e.properties['nt:name'],
-              workflowModelName: e.uid,
               id: e.uid,
+              name: e.properties['nt:name'],
+              dueDate: e.properties['nt:dueDate'],
+              workflowModelName: e.contextParameters.workflowModelName,
+              docTitle: e.contextParameters.docTitle,
             };
           });
           this.set('items', items);
@@ -301,7 +241,6 @@
         },
 
         _opParams (activeOnly) {
-          console.log('_opParams ?', activeOnly);
           return {
             activeOnly,
           };

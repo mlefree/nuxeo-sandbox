@@ -10,7 +10,7 @@ nuxeo bootstrap multi-module
 # > package :
 nuxeo bootstrap package
 
-# > link nuxeo constants mleprevost-SANDBOX :
+# > link nuxeo constants (ex: mleprevost-SANDBOX) :
 nuxeo constants
 ```
 
