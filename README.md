@@ -14,6 +14,7 @@ nuxeo bootstrap package
 nuxeo constants
 ```
 
+
 ## Install a representative db
 
 helped by [some mongoshell scripts](./scripts)
