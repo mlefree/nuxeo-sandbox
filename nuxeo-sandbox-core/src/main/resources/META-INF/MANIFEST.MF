@@ -8,4 +8,5 @@ Bundle-ManifestVersion: 2
 Bundle-SymbolicName: com.mlefree.nuxeo.sandbox.nuxeo-sandbox-core;singleton=true
 Nuxeo-Component: OSGI-INF/sandbox-operations-contrib.xml,
  OSGI-INF/workflow-service-contrib.xml,
- OSGI-INF/marshallers-contrib.xml
+ OSGI-INF/marshallers-contrib.xml,
+ OSGI-INF/workflowtest-operation-contrib.xml
