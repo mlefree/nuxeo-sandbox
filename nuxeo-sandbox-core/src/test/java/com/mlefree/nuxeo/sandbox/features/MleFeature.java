@@ -22,8 +22,6 @@ import com.mlefree.nuxeo.sandbox.MleRepositoryInit;
 @Deploy("org.nuxeo.ecm.core:OSGI-INF/uidgenerator-service.xml")
 @Deploy("org.nuxeo.ecm.core:OSGI-INF/uidgenerator-keyvalue-config.xml")
 @Deploy("com.mlefree.nuxeo.sandbox.nuxeo-sandbox-core:test-uidseq.xml")
-// @PartialDeploy(bundle = BUNDLE_NAME, extensions = { TargetExtensions.ContentModel.class,
-// TargetExtensions.ContentTemplate.class })
 @Deploy({ BUNDLE_NAME })
 @RepositoryConfig(init = MleRepositoryInit.class, cleanup = Granularity.METHOD)
 public class MleFeature implements RunnerFeature {

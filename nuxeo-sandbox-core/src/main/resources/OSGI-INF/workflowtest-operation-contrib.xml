@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<component name="com.mlefree.nuxeo.sandbox.operations.operation.workflowtest">
+
+  <extension point="operations" target="org.nuxeo.ecm.core.operation.OperationServiceComponent">
+    <operation class="com.mlefree.nuxeo.sandbox.operations.WorkflowTest"/>
+  </extension>
+
+</component>
