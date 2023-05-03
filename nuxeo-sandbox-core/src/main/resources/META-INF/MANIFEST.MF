@@ -10,3 +10,4 @@ Nuxeo-Component: OSGI-INF/sandbox-operations-contrib.xml,
  OSGI-INF/workflow-service-contrib.xml,
  OSGI-INF/marshallers-contrib.xml,
  OSGI-INF/workflowtest-operation-contrib.xml
+ OSGI-INF/qrcode-service.xml
